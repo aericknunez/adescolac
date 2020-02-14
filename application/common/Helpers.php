@@ -257,73 +257,24 @@ public static function TimeId(){
 
 public static function DeleteId($tabla, $condicion){
   $db = new dbConn();
-      if($_SESSION["root_plataforma"] == 0){
-        $a = $db->query("SELECT hash FROM {$tabla} WHERE {$condicion}"); 
-        foreach ($a as $b) {
-              $datos = array();
-              $datos["tabla"] = $tabla;
-              $datos["hash"] = $b["hash"];
-              $datos["time"] = self::TimeId();
-              $datos["action"] = 1;
-              $datos["td"] = $_SESSION["td"];
-              $db->insert("sync_tables_updates", $datos);
-              if($db->delete($tabla, "WHERE {$condicion}")){
-                return TRUE;
-              } else {
-                return FALSE;
-              }
-          unset($datos);
-        } $a->close();
-      } else {
             if($db->delete($tabla, "WHERE {$condicion}")){
                 return TRUE;
               } else {
                 return FALSE;
               }
-      }
+ 
 }
 
 
 public static function UpdateId($tabla, $dato, $condicion){
   $db = new dbConn(); // dato actualzar y datos insertar
-      if($_SESSION["root_plataforma"] == 0){
-        $a = $db->query("SELECT hash FROM {$tabla} WHERE {$condicion}"); 
-        foreach ($a as $b) {
-              $datos = array();
-              $datos["tabla"] = $tabla;
-              $datos["hash"] = $b["hash"];
-              $datos["time"] = self::TimeId();
-              $datos["action"] = 2;
-              $datos["td"] = $_SESSION["td"];
-
-              /// verifico si hay registro, lo actualizao, sino  lo agrego
-              $reg = $db->query("SELECT * FROM sync_tables_updates WHERE tabla = '$tabla' and hash = '".$b["hash"]."' and td = ".$_SESSION["td"]."");
-              if($reg->num_rows == 0){
-                $db->insert("sync_tables_updates", $datos);
-              } else {
-                $datopre["time"] = self::TimeId();
-                $db->update("sync_tables_updates", $datopre, "WHERE tabla = '$tabla' and hash = '".$b["hash"]."' and td = ".$_SESSION["td"]."");
-              } $reg->close();
-               /// con esto nada mas se registra una vez           
-
-
-              $dato["time"] = self::TimeId();
-              if($db->update($tabla, $dato, "WHERE {$condicion}")){
-                return TRUE;
-              } else {
-                return FALSE;
-              }
-          unset($datos);
-        } $a->close(); // foreach
-
-      } else { // si es web solo actualizo y ya
             $dato["time"] = self::TimeId();
             if($db->update($tabla, $dato, "WHERE {$condicion}")){
                 return TRUE;
               } else {
                 return FALSE;
               }
-      }  
+ 
 }
 
 

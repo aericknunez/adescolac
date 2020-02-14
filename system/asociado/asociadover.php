@@ -101,10 +101,10 @@ $asociado = new Asociados();
   <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
       <a class="nav-item nav-link active" id="nav-extra-tab" data-toggle="tab" href="#nav-extra" role="tab"
-        aria-controls="nav-extra" aria-selected="true">Ver Unidades</a>
+        aria-controls="nav-extra" aria-selected="true">Ver Contador</a>
 
       <a class="nav-item nav-link" id="nav-descuentos-tab" data-toggle="tab" href="#nav-descuentos" role="tab"
-        aria-controls="nav-descuentos" aria-selected="false">Agregar Unidad</a>
+        aria-controls="nav-descuentos" aria-selected="false">Agregar Contador</a>
     </div>
   </nav>
   <div class="tab-content" id="nav-tabContent">
@@ -126,13 +126,13 @@ $asociado = new Asociados();
   <div class="form-row">
     
     <div class="col-md-6 mb-2 md-form">
-      <label for="unidad">* Unidad</label>
+      <label for="unidad">* Contador</label>
       <input type="text" class="form-control" id="unidad" name="unidad">
     </div>
 
    <div class="col-md-6 mb-2 md-form">
-      <label for="placa">* Placa</label>
-      <input type="text" class="form-control" id="placa" name="placa">
+      <label for="placa">* Ultima Lectura</label>
+      <input type="text" class="form-control" id="lectura" name="lectura">
     </div>
 
   </div>

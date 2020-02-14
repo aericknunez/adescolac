@@ -214,6 +214,59 @@ $(document).ready(function(){
 
 
 
+
+
+/// llamar modal ver
+	$("body").on("click","#xcont",function(){ 
+		
+		$('#ModalVerUnidades').modal('show');
+		
+		var unidad = $(this).attr('unidad');
+		var key = $(this).attr('key');
+		var op = $(this).attr('op');
+		var dataString = 'op='+op+'&key='+key+'&unidad='+unidad;
+
+		$.ajax({
+            type: "POST",
+            url: "application/src/routes.php",
+            data: dataString,
+            beforeSend: function () {
+               $("#vista_unidad").html('<div class="row justify-content-md-center" ><img src="assets/img/load.gif" alt=""></div>');
+            },
+            success: function(data) {            
+                $("#vista_unidad").html(data); // lo que regresa de la busquea 		
+            }
+        });
+
+		$('#asociado').attr("value",key);
+		$('#unidad').attr("value",unidad);
+
+	});
+
+
+	$('#btn-addlectura').click(function(e){ /// ventas mensual
+	e.preventDefault();
+	$.ajax({
+			url: "application/src/routes.php?op=200",
+			method: "POST",
+			data: $("#form-addlectura").serialize(),
+			beforeSend: function () {
+				$('#btn-addlectura').html('<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Loading...').addClass('disabled');
+	        },
+			success: function(data){
+				$('#btn-addlectura').html('<i class="fa fa-save mr-1"></i> Guardar').removeClass('disabled');	      
+				$("#form-addlectura").trigger("reset");
+				$("#resultado").html(data);	
+
+				//$("#idcuota"+hash).html('CANCELADO');
+			}
+		})
+	});
+
+
+
+
+
 		$('.datepicker').pickadate({
 		  weekdaysShort: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
 		  weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],

@@ -8,25 +8,10 @@ elseif(isset($_GET["modal"])) include_once 'system/modal/modal.php';
 elseif(isset($_GET["user"])) include_once 'system/user/user.php';
 
 elseif(isset($_GET["configuraciones"])) include_once 'system/config_configuraciones/configuraciones.php';
+elseif(isset($_GET["precios"])) include_once 'system/config_configuraciones/precios.php';
 
 elseif(isset($_GET["root"])  and $_SESSION['tipo_cuenta'] == "1") include_once 'system/config_configuraciones/root.php';
 elseif(isset($_GET["tablas"])) include_once 'system/config_configuraciones/tablas.php';
-
-// producto
-elseif(isset($_GET["proadd"])) include_once 'system/producto/proadd.php'; // agregar
-elseif(isset($_GET["proopciones"])) include_once 'system/producto/proopciones.php'; //opciones
-elseif(isset($_GET["productos"])) include_once 'system/producto/producto.php'; //todos los productos
-elseif(isset($_GET["proup"])) include_once 'system/producto/proup.php'; // actualizar
-elseif(isset($_GET["proagregar"])) include_once 'system/producto/proagregar.php'; // agregar producto
-elseif(isset($_GET["proaverias"])) include_once 'system/producto/proaverias.php'; // agregar averias
-elseif(isset($_GET["bajasexistencias"])) include_once 'system/producto/bajasexistencias.php'; 
-elseif(isset($_GET["cotizar"])) include_once 'system/cotizar/cotizar.php'; 
-elseif(isset($_GET["cotizaciones"])) include_once 'system/cotizar/cotizaciones.php'; 
-
-
-// proveedores
-elseif(isset($_GET["proveedoradd"])) include_once 'system/proveedor/proveedores.php'; // agregar proveedores
-elseif(isset($_GET["proveedorver"])) include_once 'system/proveedor/proveedorver.php'; // proveedores
 
 
 // asociados
@@ -36,6 +21,7 @@ elseif(isset($_GET["asociaunidades"])) include_once 'system/asociado/verunidades
 elseif(isset($_GET["cuotas"])) include_once 'system/asociado/cuotas.php'; // ver unidades
 elseif(isset($_GET["cuotaspendientes"])) include_once 'system/asociado/cuotas_pendientes.php'; // ver unidades
 elseif(isset($_GET["productos_asociado"])) include_once 'system/asociado/productos_asociado.php'; // producto com asoc
+elseif(isset($_GET["ordenes_corte"])) include_once 'system/asociado/ordenes_corte.php'; // ver unidades
 
 
 // contribuciones
@@ -49,16 +35,6 @@ elseif(isset($_GET["verconductores"])) include_once 'system/conductores/conducto
 elseif(isset($_GET["con_vencidos"])) include_once 'system/conductores/vencidos.php';
 elseif(isset($_GET["sancionesasig"])) include_once 'system/conductores/sancionados.php';
 
-
-
-// clientes
-elseif(isset($_GET["clienteadd"])) include_once 'system/cliente/clientes.php'; // agregar cliente
-elseif(isset($_GET["clientever"])) include_once 'system/cliente/clientever.php'; // ver clientes
-
-
-// creditos
-elseif(isset($_GET["creditos"])) include_once 'system/credito/creditosver.php'; // ver todos los creditos
-elseif(isset($_GET["creditospendientes"])) include_once 'system/credito/creditospendientes.php'; // pendientes
 
 
 // Gastos y compras
@@ -89,13 +65,6 @@ elseif(isset($_GET["gra_semestre"])) include_once 'system/historial/gra_semestre
 
 // Panel de Control
 elseif(isset($_GET["control"])) include_once 'system/control/control.php';
-
-
-// planilla
-elseif(isset($_GET["addempleado"])) include_once 'system/planilla/empleados.php'; // agregar planilla
-elseif(isset($_GET["verempleado"])) include_once 'system/planilla/empleadover.php'; // ver empleados
-elseif(isset($_GET["descuentos"])) include_once 'system/planilla/descuentos.php'; // ver descuentos
-elseif(isset($_GET["planillasver"])) include_once 'system/planilla/planillasver.php'; // ver planilla
 
 
 else{

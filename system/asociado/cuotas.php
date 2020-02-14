@@ -8,8 +8,8 @@ $asociado = new Asociados();
 
 ?>
 
-<div id="msj"></div>
-<h2 class="h2-responsive">Listado de cuotas</h2>
+<div id="destino"></div>
+<h2 class="h2-responsive">LISTADO DE CUOTAS</h2>
 
 
 <div id="destinoasociado">

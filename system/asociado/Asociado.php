@@ -32,10 +32,7 @@ class Asociados {
 
 
   public function CompruebaForm($datos){
-        if($datos["nombre"] == NULL or
-          $datos["documento"] == NULL or
-          $datos["direccion"] == NULL or
-          $datos["telefono"] == NULL){
+        if($datos["nombre"] == NULL){
           return FALSE;
         } else {
          return TRUE;
@@ -50,9 +47,6 @@ class Asociados {
               $data["documento"] = $datos["documento"];
               $data["telefono"] = $datos["telefono"];
               $data["direccion"] = $datos["direccion"];
-              $data["departamento"] = $datos["departamento"];
-              $data["municipio"] = $datos["municipio"];
-              $data["email"] = $datos["email"];
               $data["comentarios"] = $datos["comentarios"];
               $data["time"] = Helpers::TimeId();
               $hash = $datos["hash"];
@@ -194,15 +188,12 @@ class Asociados {
       $db = new dbConn();
      if ($r = $db->select("*", "asociados", "WHERE hash = '".$data["key"]."' and td = ".$_SESSION["td"]."")) { 
 
-      if($this->CuotasPendientes($data["key"]) > 0){
-        Alerts::Mensajex("ATENCI&OacuteN: Este asociado tiene ".$this->CuotasPendientes($data["key"])." cuotas pendientes","danger");
-      }
 
               echo '<table class="table table-hover">
                 <thead>
                   <tr>
                     <th>Nombre: '.$r["nombre"].'</th>
-                    <td>Documento: '.$r["documento"].'</td>
+                    <th>Documento: '.$r["documento"].'</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -210,15 +201,7 @@ class Asociados {
                     <th colspan="2">Direcci&oacuten: '.$r["direccion"].'</th>
                   </tr>
                   <tr>
-                    <td>Departamento: '.$r["departamento"].'</td>
-                    <td>Municipio: '.$r["municipio"].'</td>
-                  </tr>
-                  <tr>
-                    <td>Email: '.$r["email"].'</td>
                     <td>Telefono: '.$r["telefono"].'</td>
-                  </tr>
-                  <tr>
-                    <td>Contacto: '.$r["contacto"].'</td>
                     <td>Comentarios: '.$r["comentarios"].'</td>
                   </tr>
                 </tbody>
@@ -227,35 +210,6 @@ class Asociados {
         }  unset($r); 
 
 $this->VerUnidades($data["key"], 1);
-
-
-   $a = $db->query("SELECT * FROM ticket_cliente WHERE cliente = '".$data["key"]."' and td = ".$_SESSION["td"]."");
-              $cf = $a->num_rows;
-              $a->close();
-              if($cf > 0){
-                  echo '<ul class="list-group">
-                        <li class="list-group-item list-group-item-secondary">Facturas Asignadas</li>';
-                     echo '<li class="list-group-item d-flex justify-content-between align-items-center">Facturas 
-                     <span class="badge badge-primary badge-pill">'.Helpers::Format($cf).'</span></li>';
-                  echo '</ul>';
-              } else {
-                Alerts::Mensajex("No hay facturas asignadas","warning",$boton,$boton2);
-              }
-
-
-   $a = $db->query("SELECT * FROM creditos WHERE hash_cliente = '".$data["key"]."' and td = ".$_SESSION["td"]."");
-              $cas = $a->num_rows;
-              $a->close();
-              if($cas > 0){
-                  echo '<ul class="list-group">
-                        <li class="list-group-item list-group-item-secondary">Creditos Asignados</li>';
-                     echo '<li class="list-group-item d-flex justify-content-between align-items-center">Creditos  
-                     <span class="badge badge-secondary badge-pill">'.Helpers::Format($cas).'</span></li>';
-                  echo '</ul>';
-              } else {
-                Alerts::Mensajex("No hay creditos asignados","info",$boton,$boton2);
-              }
-
 
 
   }
@@ -268,7 +222,7 @@ $this->VerUnidades($data["key"], 1);
 ///
   public function AddUnidades($datos){
     $db = new dbConn();
-      if($datos["unidad"] != NULL or $datos["placa"] != NULL){ // comprueba si todos los datos requeridos estan llenos
+      if($datos["unidad"] != NULL or $datos["lectura"] != NULL){ // comprueba si todos los datos requeridos estan llenos
                 $datos["edo"] = 1;
                 $datos["hash"] = Helpers::HashId();
                 $datos["time"] = Helpers::TimeId();
@@ -295,14 +249,14 @@ $this->VerUnidades($data["key"], 1);
 
           $a = $db->query("SELECT * FROM asociados_unidades WHERE asociado='".$asociado."' and td = ".$_SESSION["td"]." order by id desc");
           if($a->num_rows > 0){
-          Alerts::Mensajex("Unidades registradas por el asociado","info");
+          Alerts::Mensajex("Contadores registrados por el asociado","info");
 
         echo '<table class="table table-sm table-striped">
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">Unidad</th>
-                  <th scope="col">Placa</th>';
+                  <th scope="col">Contador</th>
+                  <th scope="col">Ultima Lectura</th>';
                         if($ver == NULL){
                           echo '<th scope="col">Borrar</th>';
                         }
@@ -314,7 +268,7 @@ $this->VerUnidades($data["key"], 1);
                 echo '<tr>
                         <th scope="row">'.$n++.'</th>
                         <td>'.$b["unidad"].'</td>
-                        <td>'.$b["placa"].'</td>';
+                        <td>'.$b["lectura"].'</td>';
                         if($ver == NULL){
                           echo '<td><a id="delunidad" hash="'.$b["hash"].'" op="197" asociado="'.$asociado.'"><i class="fa fa-minus-circle fa-lg red-text"></i></a></td>';
                         }
@@ -352,7 +306,7 @@ public function VerTodasLasUnidades(){
                     <th>#</th>
                     <th>Asociado</th>
                     <th>Unidad</th>
-                    <th>Placa</th>
+                    <th>Ultima Lectura</th>
                     <th>Ver</th>
                   </tr>
                 </thead>
@@ -363,8 +317,11 @@ public function VerTodasLasUnidades(){
                       <td>'. $n ++ .'</td>
                       <td>'.$this->AsociadoNombre($b["asociado"]).'</td>
                       <td>'.$b["unidad"].'</td>
-                      <td>'.$b["placa"].'</td>
-                      <td><a id="xver" op="188" key="'.$b["asociado"].'"><i class="fas fa-search fa-lg green-text"></i></a></td>
+                      <td>'.$b["lectura"].'</td>
+                      <td>
+                      <a id="xver" op="188" key="'.$b["asociado"].'"><i class="fas fa-search fa-lg green-text"></i></a>
+                        |  <a id="xcont" op="189" key="'.$b["asociado"].'" unidad="'.$b["unidad"].'"><i class="fas fa-file-invoice fa-lg red-text"></i></a>
+                      </td>
                     </tr>';          
               }
         echo '</tbody>
@@ -391,36 +348,46 @@ public function VerTodasLasUnidades(){
   }
 
 
-  public function CalculaTotal($hash){
+
+  public function DatosAsociado($datos){
       $db = new dbConn();
+      $asociado = new Cuotas();
 
-    if ($r = $db->select("*", "asoc_cuotas", "WHERE hash = '$hash' and td = ".$_SESSION["td"]."")) { 
-
-      if($r["finF"] < Fechas::Format(date("d-m-Y"))){
-        $total = $r["cuota"] + $r["mora"];
-      } else {
-        $total = $r["cuota"];
+      $datos["asociado"] = $datos["key"];
+      if($asociado->CompruebaCuota($datos) == FALSE){
+        Alerts::Mensajex("Ya existe una cuota en esta fecha","danger");
       }
-    }  unset($r);  
 
-    return $total;
+      echo '<h2>'.$this->AsociadoNombre($datos["key"]).'</h2>
+      Contador:
+      <h1>'.$datos["unidad"].'</h1>
+      Lectura anterior:
+      <h3>'.$asociado->LecturaAnterior($datos["unidad"]).'</h3>';
+
   }
 
 
 
 
-public function VerCuotas(){
+
+public function VerCuotas($vencidos = NULL){
       $db = new dbConn();
-          $a = $db->query("SELECT * FROM asoc_cuotas WHERE td = ".$_SESSION["td"]." order by id desc");
+
+       if($vencidos == NULL){
+        $a = $db->query("SELECT * FROM cuotas WHERE td = ".$_SESSION["td"]." order by id desc");
+      } else {
+        $a = $db->query("SELECT * FROM cuotas WHERE edo = 1 and td = ".$_SESSION["td"]." order by id desc");
+      }
+          
           if($a->num_rows > 0){
         echo '<table id="dtMaterialDesignExample" class="table table-sm table-striped" >
                 <thead>
                   <tr>
                     <th>#</th>
                     <th>Asociado</th>
-                    <th>Contribuci&oacuten</th>
-                    <th>Cuota</th>
-                    <th>Mora</th>
+                    <th>Contador</th>
+                    <th>Lectura Anterior</th>
+                    <th>Lectura Actual</th>
                     <th>Total</th>
                     <th>Estado</th>
                   </tr>
@@ -428,195 +395,97 @@ public function VerCuotas(){
                 <tbody>';
           $n = 1;
               foreach ($a as $b) { 
-                if($b["edo"] == 1) $edo = '<a id="pagar" op="199" hash="'.$b["hash"].'"><i class="fas fa-money-bill-alt fa-lg green-text"></i> COBRAR</a>'; else $edo = "CANCELADO";
+                if($b["edo"] == 1) $edo = '<a id="pagar" op="201" hash="'.$b["hash"].'"><i class="fas fa-money-bill-alt fa-lg green-text"></i> COBRAR</a>'; else $edo = "CANCELADO";
                 echo '<tr>
                       <td>'. $n ++ .'</td>
                       <td>'.$this->AsociadoNombre($b["asociado"]).'</td>
-                      <td>'.$b["descripcion"].'</td>
-                      <td>'.$b["cuota"].'</td>
-                      <td>'.$b["mora"].'</td>
-                      <td>'.Helpers::Dinero($this->CalculaTotal($b["hash"])).'</td>
-                      <td id="idcuota'.$b["hash"].'">'.$edo.'</td>
-                    </tr>';          
-              }
-        echo '</tbody>
-                <tfoot>
-                  <tr>
-                    <th>#</th>
-                    <th>Asociado</th>
-                    <th>Contribuci&oacuten</th>
-                    <th>Cuota</th>
-                    <th>Mora</th>
-                    <th>Total</th>
-                    <th>Estado</th>
-                  </tr>
-                </tfoot>
-              </table>';
-
-          } $a->close();  
-
-  }
-
-
-public function Cuota($hash){
-      $db = new dbConn();
-        if ($r = $db->select("*", "asoc_cuotas", "WHERE hash = '$hash' and td = ".$_SESSION["td"]."")) { 
-
-         echo '<div class="text-center"><h4>'.$r["descripcion"].'</h4>
-          <h1>'.Helpers::Dinero($this->CalculaTotal($hash)).'</h1>
-          <p>Cuota de: '.Fechas::MesEscrito($r["inicio"]).' de '.Fechas::AnoFecha($r["inicio"]).'</p>
-          <a id="cobrar" hash="'.$hash.'" op="200" total="'.$this->CalculaTotal($hash).'" class="btn btn-success btn-rounded">Cobrar</a>
-          </div>';
-
-        }  unset($r); 
-    }
-
-public function Cobrar($hash, $total){
-      $db = new dbConn();
-
-    $data = array();
-    $data["total"] = $total;
-    $data["dia_cancel"] = date("d-m-Y");
-    $data["dia_cancelF"] = Fechas::Format(date("d-m-Y"));
-    $data["edo"] = 2;
-    $data["time"] = Helpers::TimeId();
-    if (Helpers::UpdateId("asoc_cuotas", $data, "hash = '$hash' and td = ".$_SESSION["td"]."")) {
-        Alerts::Alerta("success","Realizado!","Cambio realizado exitsamente!");        
-
-      } else {
-      Alerts::Alerta("error","Error!","Faltan Datos!");
-      }
-  
-
-    }
-
-
-
-
-public function CuotasPendientes($asociado){
-      $db = new dbConn();
-
-        $aw = $db->query("SELECT * FROM asoc_cuotas WHERE asociado = '".$asociado."' and finF < '".Fechas::Format(date("d-m-Y"))."' and edo = 1 and td = ".$_SESSION["td"]."");
-        return $aw->num_rows;
-        $aw->close();
-    }
-
-
-
-
-public function VerCuotasPendientes(){
-      $db = new dbConn();
-          $a = $db->query("SELECT * FROM asoc_cuotas WHERE edo = 1 and td = ".$_SESSION["td"]." order by id desc");
-          if($a->num_rows > 0){
-        echo '<table class="table table-sm table-striped" >
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Asociado</th>
-                    <th>Contribuci&oacuten</th>
-                    <th>Fecha</th>
-                    <th>Cuota</th>
-                    <th>Mora</th>
-                    <th>Total</th>
-                    <th>Estado</th>
-                  </tr>
-                </thead>
-                <tbody>';
-          $n = 1;
-              foreach ($a as $b) { 
-                if($b["edo"] == 1) $edo = '<a id="pagar" op="199" hash="'.$b["hash"].'">PENDIENTE</a>'; else $edo = "CANCELADO";
-                echo '<tr>
-                      <td>'. $n ++ .'</td>
-                      <td>'.$this->AsociadoNombre($b["asociado"]).'</td>
-                      <td>'.$b["descripcion"].'</td>
-                      <td>'.Fechas::MesEscrito($b["inicio"]).' de '.Fechas::AnoFecha($b["inicio"]).'</td>
-                      <td>'.$b["cuota"].'</td>
-                      <td>'.$b["mora"].'</td>
-                      <td>'.Helpers::Dinero($this->CalculaTotal($b["hash"])).'</td>
-                      <td id="idcuota'.$b["hash"].'">'.$edo.'</td>
-                    </tr>';          
-              }
-        echo '</tbody>
-                <tfoot>
-                  <tr>
-                    <th>#</th>
-                    <th>Asociado</th>
-                    <th>Contribuci&oacuten</th>
-                    <th>Fecha</th>
-                    <th>Cuota</th>
-                    <th>Mora</th>
-                    <th>Total</th>
-                    <th>Estado</th>
-                  </tr>
-                </tfoot>
-              </table>';
-
-          } else {
-            Alerts::Mensajex("No se encuentran cuotas pendientes a cancelar","success");
-          } $a->close();  
-
-  }
-
-
-
-
-
-
-
-public function VerProductosAsociado($asociado, $inicio, $fin){ /// productos comprados por los asociados
-      $db = new dbConn();
-        //  $a = $db->query("SELECT * FROM ticket_cliente WHERE cliente = '$asociado' and td = ".$_SESSION["td"]." order by id desc");
-
-          $a = $db->query("SELECT ticket.cant, ticket.producto, ticket.pv, ticket.stotal, ticket.imp, ticket.total, ticket.tipo_pago, ticket.fecha, ticket.hora FROM ticket INNER JOIN ticket_cliente ON ticket_cliente.factura = ticket.num_fac and ticket_cliente.cliente = '$asociado' and ticket.fechaF BETWEEN '$inicio' AND '$fin' and ticket.td = ".$_SESSION["td"]." order by ticket_cliente.id desc");
-
-          if($a->num_rows > 0){
-        echo '<table class="table table-sm table-striped" >
-                <thead>
-                  <tr>
-                    <th>Cant</th>
-                    <th>Producto</th>
-                    <th>Pago</th>
-                    <th>Fecha</th>
-                    <th>Precio</th>
-                    <th>S Total</th>
-                    <th>Imp</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>';
-              foreach ($a as $b) { 
-                if($b["tipo_pago"] == 1) $edo = 'Efectivo'; elseif($b["tipo_pago"] == 2) $edo = "Tarjeta"; else $edo = "Credito";
-                echo '<tr>
-                      <td>'. $b["cant"] .'</td>
-                      <td>'.$b["producto"].'</td>
-                      <td>'.$edo.'</td>
-                      <td>'.$b["fecha"].' - '.$b["hora"].'</td>
-                      <td>'.Helpers::Dinero($b["pv"]).'</td>
-                      <td>'.Helpers::Dinero($b["stotal"]).'</td>
-                      <td>'.Helpers::Dinero($b["imp"]).'</td>
+                      <td>'.$b["contador"].'</td>
+                      <td>'.$b["lectura_anterior"].'</td>
+                      <td>'.$b["lectura_actual"].'</td>
                       <td>'.Helpers::Dinero($b["total"]).'</td>
+                      <td id="idcuota'.$b["hash"].'">'.$edo.'</td>
                     </tr>';          
               }
         echo '</tbody>
                 <tfoot>
                   <tr>
-                    <th>Cant</th>
-                    <th>Producto</th>
-                    <th>Pago</th>
-                    <th>Fecha</th>
-                    <th>Precio</th>
-                    <th>S Total</th>
-                    <th>Imp</th>
+                    <th>#</th>
+                    <th>Asociado</th>
+                    <th>Contador</th>
+                    <th>Lectura Anterior</th>
+                    <th>Lectura Actual</th>
                     <th>Total</th>
+                    <th>Estado</th>
                   </tr>
                 </tfoot>
               </table>';
 
           } else {
-            Alerts::Mensajex("No se encuentran registros de este asociado","success");
+            Alerts::Mensajex("No se encontraron cuotas para mostrar","danger");
           } $a->close();  
 
   }
+
+
+
+
+
+
+
+
+
+
+public function OrdenesCorte($vencidos = NULL){
+      $db = new dbConn();
+      $asociado = new Cuotas();
+
+        $a = $db->query("SELECT * FROM cuotas_corte WHERE td = ".$_SESSION["td"]." order by id desc");
+          
+          if($a->num_rows > 0){
+        echo '<table id="dtMaterialDesignExample" class="table table-sm table-striped" >
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Asociado</th>
+                    <th>Contador</th>
+                    <th>Fecha</th>
+                    <th>Total Adeudado</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>';
+          $n = 1;
+              foreach ($a as $b) { 
+                if($b["edo"] == 1) $edo = '<a id="pagar" op="203" hash="'.$b["hash"].'"><i class="fas fa-money-bill-alt fa-lg green-text"></i> COBRAR</a>'; else $edo = "CANCELADO";
+                echo '<tr>
+                      <td>'. $n ++ .'</td>
+                      <td>'.$this->AsociadoNombre($b["asociado"]).'</td>
+                      <td>'.$b["contador"].'</td>
+                      <td>'.$b["fecha"].'</td>
+                      <td>'.Helpers::Dinero($asociado->TotalAdeudado($b["contador"])).'</td>
+                      <td id="idcuota'.$b["hash"].'">'.$edo.'</td>
+                    </tr>';          
+              }
+        echo '</tbody>
+                <tfoot>
+                  <tr>
+                    <th>#</th>
+                    <th>Asociado</th>
+                    <th>Contador</th>
+                    <th>Fecha</th>
+                    <th>Total Adeudado</th>
+                    <th>Estado</th>
+                  </tr>
+                </tfoot>
+              </table>';
+
+          } else {
+            Alerts::Mensajex("No se encontraron cuotas para mostrar","danger");
+          } $a->close();  
+
+  }
+
+
 
 
 

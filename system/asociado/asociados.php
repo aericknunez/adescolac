@@ -30,12 +30,12 @@ $asociado = new Asociados();
   <div class="form-row">
     
     <div class="col-md-6 mb-2 md-form">
-      <label for="cod">* Documento</label>
+      <label for="cod">Documento</label>
       <input type="text" class="form-control" id="documento" name="documento">
     </div>
 
    <div class="col-md-6 mb-2 md-form">
-      <label for="descripcion">* Tel&eacutefono</label>
+      <label for="descripcion">Tel&eacutefono</label>
       <input type="text" class="form-control" id="telefono" name="telefono">
     </div>
 
@@ -44,37 +44,14 @@ $asociado = new Asociados();
 
   <div class="form-row">
     
-    <div class="col-md-6 mb-2 md-form">
-      <label for="descripcion">* Direcci&oacuten</label>
+    <div class="col-md-12 mb-2 md-form">
+      <label for="descripcion">Direcci&oacuten</label>
       <input type="text" class="form-control" id="direccion" name="direccion">
     </div>
 
-    <div class="col-md-6 mb-2 md-form">
-      <label for="cod">Departamento</label>
-      <input type="text" class="form-control" id="departamento" name="departamento" value="Santa Ana">
-    </div>
-
-
 
   </div>
 
-
- 
-
-  <div class="form-row">
- 
-  <div class="col-md-6 mb-2 md-form">
-      <label for="descripcion">Municipio</label>
-      <input type="text" class="form-control" id="municipio" name="municipio" value="Metapan">
-    </div>
-
-    <div class="col-md-6 mb-2 md-form">
-      <label for="cod">Email</label>
-      <input type="text" class="form-control" id="email" name="email">
-    </div>
-
-
-  </div>
 
 
 
@@ -93,7 +70,6 @@ $asociado = new Asociados();
         <select class="browser-default custom-select mb-1" id="edo" name="edo">
           <option value="1" selected>Activo</option>
           <option value="2">Inactivo</option>
-          <option value="3">NO Asociado</option>
         </select>
     </div>
   </div>

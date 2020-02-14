@@ -4,16 +4,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 include_once 'application/common/Fechas.php';
 include_once 'application/common/Alerts.php';
 include_once 'system/asociado/Asociado.php';
+include_once 'system/cuotas/Cuotas.php';
+
 $asociado = new Asociados(); 
 
 ?>
 
 <div id="destino"></div>
-<h2 class="h2-responsive">CUOTAS PENDIENTES</h2>
+<h2 class="h2-responsive">ORDENES DE CORTE PENDIENTES</h2>
 
 
 <div id="destinoasociado">
-   <?php $asociado->VerCuotas("vencidas"); ?>
+   <?php $asociado->OrdenesCorte(); ?>
 </div>
 
 
