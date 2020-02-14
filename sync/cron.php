@@ -17,62 +17,62 @@ include_once '../application/common/Fechas.php';
 
 
 
-// busca todos los respaldo no subidos y los sube
-    $aw = $db->query("SELECT * FROM sync_up WHERE subido = 0 and td = ".$_SESSION["temporal_td"]."");
+// busca la fecha de vencimiento de cada cuota
+    $aw = $db->query("SELECT * FROM precios WHERE  td = ".$_SESSION["temporal_td"]."");
     foreach ($aw as $bw) {
-    	$sync = $bw["comprobacion"];
-    	$fichero = $sync . ".sql";
-			if (file_exists($fichero)){ 
-					
-						if(SubirFtp($sync) == TRUE){
-							@unlink($sync . ".sql");
-						}
-				
-			}
-  
-    } 
-    unset($sync); 
-    $aw->close();
+    	$vence = $bw["fecha_ultima"];
+    	$mora = $bw["mora"];
+    	$reconexion = $bw["reconexion"];
+    } $aw->close();
 
 
+/// si ya vencio entonces hago todo, sino se acaba el script
+if($vence < date("d")){
 
-/////////// RESPALDAR ////////
 
-include_once '../system/sync/Push.php';
-$pushed =  new Push;
-$sync = $pushed->Execute($_REQUEST["corte"]);
+    $a = $db->query("SELECT * FROM cuotas WHERE edo = 1 and vencido = 0 and td = ".$_SESSION["temporal_td"]."");
+    foreach ($a as $b) {
 
-if($sync != NULL){
-	if(SubirFtp($sync) == TRUE){
-		@unlink($sync . ".sql");
+              $data["vencido"] = 1;
+              $data["mora"] = $mora;
+              $data["total"] = $b["total"] + $mora;
+              Helpers::UpdateId("cuotas", $data, "hash = '".$b["hash"]."' and td = ".$_SESSION["temporal_td"]."");      
+
+
+$ap = $db->query("SELECT * FROM cuotas WHERE contador = '".$b["contador"]."' and edo = 1 and vencido = 0 and td = ".$_SESSION["temporal_td"]."");
+$cantidad = $ap->num_rows;
+$ap->close();
+
+	if($cantidad == 3){
+
+		$af = $db->query("SELECT * FROM cuotas_corte WHERE contador = '".$b["contador"]."' and edo = 1 and td = ".$_SESSION["temporal_td"]."");
+		$cant = $af->num_rows;
+		$af->close();
+		
+			if($cantidad == 0){
+				    $datos = array();
+				    $datos["asociado"] = $b["asociado"];
+				    $datos["contador"] = $b["contador"];
+				    $datos["cantidad"] = $reconexion;
+				    $datos["fecha"] = date("d-m-Y");
+				    $datos["fechaF"] = Fechas::Format(date("d-m-Y"));
+				    $datos["edo"] = 1;
+				    $datos["hash"] = Helpers::HashId();
+               		$datos["time"] = Helpers::TimeId();
+               		$datos["td"] = $_SESSION["temporal_td"];
+				    $db->insert("cuotas_corte", $datos);
+			}	    
+
 	}
-} 
-
-unset($_SESSION["temporal_td"]);
 
 
 
+    } $a->close();
+
+      
 
 
-function SubirFtp($sync){
-	include_once '../system/sync/Ftp.php';
-		$subir =  new Ftp;
-		if($subir->Servidor("ftp.pizto.com",
-						"erick@pizto.com",
-						"caca007125-",
-						$sync,
-						"/acamsal/sync/database/",
-						"C:/AppServ/www/acamsal/sync/". $sync .".sql") == TRUE){
-						return TRUE;
-		} else {
-			return FALSE;
-		}
-}
 
 
-if($_REQUEST["corte"] != NULL){
-	echo '<script>
-			window.location.href="?corte";
-	</script>';
-}
+} // termina vence
 
