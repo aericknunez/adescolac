@@ -494,6 +494,7 @@ include_once '../../system/asociado/Asociado.php';
 
 if($_REQUEST["op"]=="188"){ // ver asociado
 include_once '../../system/asociado/Asociado.php';
+include_once '../../system/cuotas/Cuotas.php';
 	$asociado = new Asociados;
 	$asociado->VistaAsociado($_POST);
 }
@@ -513,6 +514,7 @@ include_once '../../system/cuotas/Cuotas.php';
 //195
 if($_REQUEST["op"]=="195"){ // ver unidades
 include_once '../../system/asociado/Asociado.php';
+include_once '../../system/cuotas/Cuotas.php';
 	$asociado = new Asociados;
 	$asociado->VerUnidades($_POST["key"]);
 }
@@ -520,11 +522,13 @@ include_once '../../system/asociado/Asociado.php';
 
 if($_REQUEST["op"]=="196"){ // add unidades
 include_once '../../system/asociado/Asociado.php';
+include_once '../../system/cuotas/Cuotas.php';
 	$asociado = new Asociados;
 	$asociado->AddUnidades($_POST);
 }
 if($_REQUEST["op"]=="197"){ // elimina asociado
 include_once '../../system/asociado/Asociado.php';
+include_once '../../system/cuotas/Cuotas.php';
 	$asociado = new Asociados;
 	$asociado->DelUnidad($_REQUEST["hash"], $_REQUEST["asociado"]);
 }

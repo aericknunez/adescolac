@@ -203,7 +203,7 @@ $a = $db->query("SELECT sum(total) FROM cuotas WHERE contador = '$contador' and 
          $total = $b["sum(total)"];
    } $a->close();
 
-   if($this->CompruebaCorte($r["contador"]) == TRUE){ 
+   if($this->CompruebaCorte($r["contador"]) == FALSE){ // tre existe registro
         if ($r = $db->select("reconexion", "precios", "WHERE td = ".$_SESSION["td"]."")) { 
             $reconexion = $r["reconexion"];
         } unset($r); 

@@ -246,6 +246,7 @@ $this->VerUnidades($data["key"], 1);
 
   public function VerUnidades($asociado, $ver = NULL){
       $db = new dbConn();
+      $aso = new Cuotas();
 
           $a = $db->query("SELECT * FROM asociados_unidades WHERE asociado='".$asociado."' and td = ".$_SESSION["td"]." order by id desc");
           if($a->num_rows > 0){
@@ -256,7 +257,8 @@ $this->VerUnidades($data["key"], 1);
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Contador</th>
-                  <th scope="col">Ultima Lectura</th>';
+                  <th scope="col">Ultima Lectura</th>
+                  <th scope="col">Saldo</th>';
                         if($ver == NULL){
                           echo '<th scope="col">Borrar</th>';
                         }
@@ -268,7 +270,8 @@ $this->VerUnidades($data["key"], 1);
                 echo '<tr>
                         <th scope="row">'.$n++.'</th>
                         <td>'.$b["unidad"].'</td>
-                        <td>'.$b["lectura"].'</td>';
+                        <td>'.$b["lectura"].'</td>
+                        <td>'.Helpers::Dinero($aso->TotalAdeudado($b["unidad"])).'</td>';
                         if($ver == NULL){
                           echo '<td><a id="delunidad" hash="'.$b["hash"].'" op="197" asociado="'.$asociado.'"><i class="fa fa-minus-circle fa-lg red-text"></i></a></td>';
                         }
@@ -286,14 +289,36 @@ $this->VerUnidades($data["key"], 1);
 
   public function DelUnidad($hash, $asociado){ // elimina precio
     $db = new dbConn();
-        if (Helpers::DeleteId("asociados_unidades", "hash='$hash'")) {
-           Alerts::Alerta("success","Eliminado!","Unidad eliminado correctamente!");
+
+        if($this->ContadorActividad($hash) == TRUE){
+
+                if (Helpers::DeleteId("asociados_unidades", "hash='$hash'")) {
+                   Alerts::Alerta("success","Eliminado!","Unidad eliminado correctamente!");
+                } else {
+                    Alerts::Alerta("error","Error!","Algo Ocurrio!");
+                } 
+
         } else {
-            Alerts::Alerta("error","Error!","Algo Ocurrio!");
-        } 
-     $this->VerUnidades($asociado);
+          Alerts::Alerta("error","Error!","Ya hay registros de este contador!");
+        }
+             $this->VerUnidades($asociado);
   }
 
+  public function ContadorActividad($hash){ // actividad del contador
+    $db = new dbConn();
+
+    if ($r = $db->select("unidad", "asociados_unidades", "WHERE hash = '$hash' and td = ".$_SESSION["td"]."")) { 
+        $contador = $r["unidad"];
+    }  unset($r);  
+
+    $a = $db->query("SELECT * FROM cuotas WHERE contador = '$contador' and td = ".$_SESSION["td"]."");
+    if($a->num_rows == 0){
+      return true; /// no existe registro
+    } else {
+      return false;
+    } $a->close();
+
+  }
 
 
 public function VerTodasLasUnidades(){
