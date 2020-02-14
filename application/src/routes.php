@@ -245,8 +245,28 @@ $imgs = new Success();
 $imgs->VerImg($_REQUEST["key"], "assets/img/productos/");
 }
 
+///// busqueda //////////////////////////////////////////////
+///
+
+if($_REQUEST["op"]=="50"){ 
+	include_once '../../system/ventas/Busqueda.php';
+	$search = new Search();
+	$search->Busqueda($_POST);
+}
 
 
+
+
+if($_REQUEST["op"]=="51"){ 
+include_once '../../system/asociado/Asociado.php';
+include_once '../../system/cuotas/Cuotas.php';
+	$asociado = new Asociados;
+	$asociado->DatosAsociado($_POST);
+
+	include_once '../../system/ventas/Busqueda.php';
+	$search = new Search();
+	$search->Form($_POST);
+}
 
 
 ///////////////////////// corte /////////////////
@@ -579,6 +599,10 @@ include_once '../../system/cuotas/Cuotas.php';
 	$asociado = new Cuotas;
 	$asociado->CobrarSuspencion($_POST);
 }
+
+
+
+
 
 
 

@@ -360,7 +360,7 @@ public function CancelarCorte($ramdom,$fecha){
 	}
 
 	public function Form(){
-		Alerts::Mensajex("Aun no se ha realizado el corte de este dia. <br />Ingrese la cantidad de efectivo para poder continuar",'danger',$boton,$boton2);
+		Alerts::Mensajex("Para realizar el corte solo debe ingresar la cantidad que posee en caja chica. <br />Ingrese la cantidad de efectivo para poder continuar",'danger',$boton,$boton2);
 	echo '<form id="form-corte" name="form-corte">
 		 
 		 <div class="form-group row justify-content-center align-items-center">

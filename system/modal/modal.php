@@ -12,7 +12,7 @@ if($_REQUEST["modal"]=="registrar") include_once 'system/modal/modal/registrar.p
 if($_REQUEST["modal"]=="newpass") include_once 'system/modal/modal/user_cambiar_pass.php';
 
 if($_REQUEST["modal"]=="userupdate") include_once 'system/modal/modal/user_update.php';
-
+http://localhost/adescolac/?
 if($_REQUEST["modal"]=="avatar") include_once 'system/modal/modal/avatar.php';
 
 if($_REQUEST["modal"]=="conf_config") include_once 'system/modal/modal/conf_config.php';
@@ -23,6 +23,6 @@ if($_REQUEST["modal"]=="img_negocio") include_once 'system/modal/modal/imagen_ne
 
 if($_REQUEST["modal"]=="editasociado") include_once 'system/modal/modal/editar-asociado.php';
 
-if($_REQUEST["modal"]=="editcontribucion") include_once 'system/modal/modal/editar-contribucion.php';
-if($_REQUEST["modal"]=="editsancion") include_once 'system/modal/modal/editar-sancion.php';
+
+if($_REQUEST["modal"]=="Busqueda") include_once 'system/modal/modal/Busqueda.php';
 

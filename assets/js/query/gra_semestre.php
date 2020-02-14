@@ -36,13 +36,13 @@ var myBarChart = new Chart(ctxB, {
              ?>
             label: 'Ventas',
             data: [
-            <?php echo Helpers::Entero(Corte::VentaMes($dia6)); ?>, 
-            <?php echo Helpers::Entero(Corte::VentaMes($dia5)); ?>, 
-            <?php echo Helpers::Entero(Corte::VentaMes($dia4)); ?>, 
-            <?php echo Helpers::Entero(Corte::VentaMes($dia3)); ?>, 
-            <?php echo Helpers::Entero(Corte::VentaMes($dia2)); ?>, 
-            <?php echo Helpers::Entero(Corte::VentaMes($dia1)); ?>, 
-            <?php echo Helpers::Entero(Corte::VentaMes($hoy)); ?>
+            <?php echo Helpers::Entero($control->VentaMes($dia6)); ?>, 
+            <?php echo Helpers::Entero($control->VentaMes($dia5)); ?>, 
+            <?php echo Helpers::Entero($control->VentaMes($dia4)); ?>, 
+            <?php echo Helpers::Entero($control->VentaMes($dia3)); ?>, 
+            <?php echo Helpers::Entero($control->VentaMes($dia2)); ?>, 
+            <?php echo Helpers::Entero($control->VentaMes($dia1)); ?>, 
+            <?php echo Helpers::Entero($control->VentaMes($hoy)); ?>
             <?php 
              }
             if($_REQUEST["d"]==2){

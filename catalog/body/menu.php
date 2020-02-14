@@ -20,21 +20,13 @@ if((Helpers::ServerDomain() == FALSE and $_SESSION["root_plataforma"] == 0) or (
 <div class="collapsible-body">
 <ul class="list-unstyled">
 
-<li><a href="?consolidado" class="waves-effect"><i class="fas fa-cogs"></i> Consolidado Diario</a></li>
-
-<li><a href="?vdiario" class="waves-effect"><i class="fas fa-cog"></i> Ventas Diarias</a></li>
-<li><a href="?vmensual" class="waves-effect"><i class="fas fa-cogs"></i> Ventas Mensuales</a></li>
-
 <li><a href="?hcortes" class="waves-effect"><i class="fas fa-cogs"></i> Historial de Cortes</a></li>
 
-<li><a href="?gdiario" class="waves-effect"><i class="fas fa-cog"></i> Gastos Diarios</a></li>
+
 <li><a href="?gmensual" class="waves-effect"><i class="fas fa-cogs"></i> Gastos Mensuales</a></li>
 
-
-<li><a href="?gra_semanal" class="waves-effect"><i class="fas fa-cog"></i> Grafico Semanal</a></li>
-<li><a href="?gra_mensual" class="waves-effect"><i class="fas fa-cogs"></i> Grafico Mensual</a></li>
 <li><a href="?gra_semestre" class="waves-effect"><i class="fas fa-cogs"></i> Grafico Semestral</a></li>
-<li><a href="?gra_clientes" class="waves-effect"><i class="fas fa-cogs"></i> Grafico de Clientes</a></li>
+
 
 </ul>
 </div>
@@ -68,6 +60,20 @@ if((Helpers::ServerDomain() == FALSE and $_SESSION["root_plataforma"] == 0) or (
 
 
 
+<li><a class="collapsible-header waves-effect arrow-r"><i class="far fa-user"></i> Cuotas y pagos<i class="fa fa-angle-down rotate-icon"></i></a>
+<div class="collapsible-body">
+<ul class="list-unstyled">
+
+<li><a href="?asociaunidades" class="waves-effect"><i class="fas fa-address-book"></i> Ver Contadores</a></li>
+<li><a href="?cuotas" class="waves-effect"><i class="fas fa-money-bill-alt"></i> Todas las cuotas</a></li>
+
+<li><a href="?cuotaspendientes" class="waves-effect"><i class="fas fa-money-bill-alt"></i> Cuotas Pendientes</a></li>
+<li><a href="?ordenes_corte" class="waves-effect"><i class="fas fa-address-book"></i> Ordenes de Corte</a></li>
+</ul>
+</div>
+</li>
+
+
 
 
 
@@ -78,19 +84,13 @@ if((Helpers::ServerDomain() == FALSE and $_SESSION["root_plataforma"] == 0) or (
 <div class="collapsible-body">
 <ul class="list-unstyled">
 
-
-<li><a href="?cuotas" class="waves-effect"><i class="fas fa-money-bill-alt"></i> Todas las cuotas</a></li>
-
-<li><a href="?cuotaspendientes" class="waves-effect"><i class="fas fa-money-bill-alt"></i> Cuotas Pendientes</a></li>
-
 <?php  if((Helpers::ServerDomain() == FALSE and $_SESSION["root_plataforma"] == 0) or (Helpers::ServerDomain() == TRUE and $_SESSION["root_plataforma"] == 1)) {
 ?>
 <li><a href="?asociadoadd" class="waves-effect"><i class="fas fa-user"></i> Agrega Asociado</a></li>
 <?php  } ?>
 
 <li><a href="?asociadover" class="waves-effect"><i class="fas fa-address-book"></i> Ver Asociados</a></li>
-<li><a href="?asociaunidades" class="waves-effect"><i class="fas fa-address-book"></i> Ver Contadores</a></li>
-<li><a href="?ordenes_corte" class="waves-effect"><i class="fas fa-address-book"></i> Ordenes de Corte</a></li>
+
 </ul>
 </div>
 </li>
@@ -113,8 +113,8 @@ if((Helpers::ServerDomain() == FALSE and $_SESSION["root_plataforma"] == 0) or (
 <div class="collapsible-body">
 <ul class="list-unstyled">
 
-<li><a  class="waves-effect"><i class="fas fa-cog"></i> Opciones</a></li>
-<li><a  class="waves-effect"><i class="fas fa-cogs"></i> Imprimir Facturas</a></li>
+<!-- <li><a  class="waves-effect"><i class="fas fa-cog"></i> Opciones</a></li> -->
+<li><a href="system/imprimir/imprimir.php?op=1" class="waves-effect"><i class="fas fa-cogs"></i> Imprimir Facturas</a></li>
 
 </ul>
 </div>

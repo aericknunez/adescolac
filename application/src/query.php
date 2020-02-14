@@ -43,26 +43,16 @@ echo '
 	}
 
 	/// producto
-	if($_GET["modal"] == "proadd"){
-	echo '<script type="text/javascript" src="assets/js/query/modal.producto.js?v='.$numero.'"></script>';
-	}
-	if($_GET["modal"] == "productoBusqueda"){
-	echo '<script type="text/javascript" src="assets/js/query/productoBusqueda.js?v='.$numero.'"></script>';
+
+	if($_GET["modal"] == "Busqueda"){
+	echo '<script type="text/javascript" src="assets/js/query/Busqueda.js?v='.$numero.'"></script>';
 	}
 
 	/// asociado y contribucion
 	if($_GET["modal"] == "editasociado"){
 	echo '<script type="text/javascript" src="assets/js/query/asociado.js?v='.$numero.'"></script>';
 	}
-	if($_GET["modal"] == "editcontribucion"){
-	echo '<script type="text/javascript" src="assets/js/query/contribucion.js?v='.$numero.'"></script>';
-	}
-	if($_GET["modal"] == "editsancion"){
-	echo '<script type="text/javascript" src="assets/js/query/sancion.js?v='.$numero.'"></script>';
-	}
-	if($_GET["modal"] == "editconductor"){
-	echo '<script type="text/javascript" src="assets/js/query/conductor.js?v='.$numero.'"></script>';
-	}
+
 
 
 
@@ -204,7 +194,7 @@ else{
 echo '<script type="text/javascript" src="assets/js/query/reload_lateral.js?v='.$numero.'"></script>';
 
 echo '<script type="text/javascript" src="assets/js/query/control.js?v='.$numero.'"></script>';
-// include_once 'assets/js/query/gra_control.php'; // acativar despues
+include_once 'assets/js/query/gra_control.php'; // acativar despues
 }
 	
 ?>

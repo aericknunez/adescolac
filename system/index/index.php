@@ -7,6 +7,8 @@ include_once 'system/index/Inicio.php';
 include_once 'system/corte/Corte.php';
 $cut = new Corte();
 
+include_once 'system/control/Controles.php';
+$control = new Controles(); 
 
 echo '<div id="ventana"></div>';
 

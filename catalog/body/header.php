@@ -81,7 +81,7 @@
                 <?php // } ?>
 
                 <li class="nav-item">
-                    <a href="?modal=productoBusqueda" class="nav-link"><i class="fas fa-search"></i> <span class="clearfix d-none d-sm-inline-block">Buscar</span></a>
+                    <a href="?modal=Busqueda" class="nav-link"><i class="fas fa-search"></i> <span class="clearfix d-none d-sm-inline-block">Buscar</span></a>
                 </li>
 
                 <li class="nav-item">

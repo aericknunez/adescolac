@@ -13,7 +13,6 @@ if ($seslog->login_check() == TRUE) {
 include_once '../../application/common/Fechas.php';
 include_once '../../application/common/Alerts.php';
 
-  if($_SERVER['HTTP_REFERER'] == NULL) $dir = "http://". $_SERVER['HTTP_HOST'] . "/acamsal"; else $dir = $_SERVER['HTTP_REFERER'];
 ?>
 
 <!DOCTYPE html>
@@ -33,7 +32,7 @@ include_once '../../application/common/Alerts.php';
 </head><body class="hidden-sn navy-blue-skin">
     
 <!-- preloader -->
-
+<!-- 
 <div id="mdb-preloader" class="flex-center">
     <div class="preloader-wrapper big active crazy">
         <div class="spinner-layer spinner-blue-only">
@@ -48,7 +47,7 @@ include_once '../../application/common/Alerts.php';
           </div>
         </div>
       </div>
-</div>
+</div> -->
 
 <!-- preloader -->
 
@@ -65,23 +64,7 @@ include_once '../../application/common/Alerts.php';
 
 
 <?php  // Inicia area imprimir
-
-if ($_GET["op"] == 1) { /// imprimir listado de cuotas pendientes
-    include_once '../../system/asociado/Asociado.php';
-    $asociado = new Asociados(); 
-    echo '<h2 class="h2-responsive">Listado de cuotas pendientes</h2>';
-    $asociado->VerCuotasPendientes(); 
-}
-
-if($_GET["op"] == 2){
-    include_once '../../system/asociado/Asociado.php';
-    $asociado = new Asociados(); 
-    echo '<h2 class="h2-responsive">Productos adquiridos por el asociado</h2>';
-    $asociado->VerProductosAsociado($_GET["as"], $_GET["inicio"], $_GET["fin"]);
-
-    $dir = "http://". $_SERVER['HTTP_HOST'] . "/acamsal/?asociadover";
-}
-// termina area de imprimir
+include_once 'opciones.php';
 ?>
 
 </div>

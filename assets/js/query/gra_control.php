@@ -1,11 +1,10 @@
 <?php 
-$hoy = date("d-m-Y");
-$dia1 = Fechas::DiaResta(date("d-m-Y"),1);
-$dia2 = Fechas::DiaResta(date("d-m-Y"),2);
-$dia3 = Fechas::DiaResta(date("d-m-Y"),3);
-$dia4 = Fechas::DiaResta(date("d-m-Y"),4);
-$dia5 = Fechas::DiaResta(date("d-m-Y"),5);
-$dia6 = Fechas::DiaResta(date("d-m-Y"),6);
+$hoy = Fechas::MesResta(date("d-m-Y"),0);
+$dia1 = Fechas::MesResta(date("d-m-Y"),1);
+$dia2 = Fechas::MesResta(date("d-m-Y"),2);
+$dia3 = Fechas::MesResta(date("d-m-Y"),3);
+$dia4 = Fechas::MesResta(date("d-m-Y"),4);
+$dia5 = Fechas::MesResta(date("d-m-Y"),5);
  
  ?>
 
@@ -18,26 +17,25 @@ var myBarChart = new Chart(ctxB, {
     type: 'bar',
     data: {
         labels: [
-              "<?php echo Fechas::NombreDia($dia6); ?>", 
-              "<?php echo Fechas::NombreDia($dia5); ?>", 
-              "<?php echo Fechas::NombreDia($dia4); ?>", 
-              "<?php echo Fechas::NombreDia($dia3); ?>", 
-              "<?php echo Fechas::NombreDia($dia2); ?>", 
-              "<?php echo Fechas::NombreDia($dia1); ?>", 
-              "<?php echo Fechas::NombreDia($hoy); ?>"
+              "<?php echo Fechas::MesEscrito(date("d-") . $dia5); ?>", 
+              "<?php echo Fechas::MesEscrito(date("d-") . $dia4); ?>", 
+              "<?php echo Fechas::MesEscrito(date("d-") . $dia3); ?>", 
+              "<?php echo Fechas::MesEscrito(date("d-") . $dia2); ?>", 
+              "<?php echo Fechas::MesEscrito(date("d-") . $dia1); ?>", 
+              "<?php echo Fechas::MesEscrito(date("d-") . $hoy); ?>"
         ],
         datasets: [{
 
-            label: 'Ventas',
-            data: [
-            <?php echo Helpers::Entero(Corte::VentaHoy($dia6)); ?>, 
-            <?php echo Helpers::Entero(Corte::VentaHoy($dia5)); ?>, 
-            <?php echo Helpers::Entero(Corte::VentaHoy($dia4)); ?>, 
-            <?php echo Helpers::Entero(Corte::VentaHoy($dia3)); ?>, 
-            <?php echo Helpers::Entero(Corte::VentaHoy($dia2)); ?>, 
-            <?php echo Helpers::Entero(Corte::VentaHoy($dia1)); ?>, 
-            <?php echo Helpers::Entero(Corte::VentaHoy($hoy)); ?>
-              ],
+            label: 'Total',
+            data: [ 
+            <?php echo Helpers::Entero($control->CobrosMes($dia5)); ?>, 
+            <?php echo Helpers::Entero($control->CobrosMes($dia4)); ?>, 
+            <?php echo Helpers::Entero($control->CobrosMes($dia3)); ?>, 
+            <?php echo Helpers::Entero($control->CobrosMes($dia2)); ?>, 
+            <?php echo Helpers::Entero($control->CobrosMes($dia1)); ?>, 
+            <?php echo Helpers::Entero($control->CobrosMes($hoy)); ?>
+
+            ],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',

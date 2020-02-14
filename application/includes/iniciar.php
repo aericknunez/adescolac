@@ -44,9 +44,9 @@ $user=sha1($_SESSION['username']);
         $inicia = new Inicio;
         $inicia->Caduca(); // revisa si ha caducado
 
-                include_once '../../system/contribucion/Contribucion.php';
-                $contribucion = new Contribuciones(); 
-                $contribucion->Ejecutar();
+                // include_once '../../system/contribucion/Contribucion.php';
+                // $contribucion = new Contribuciones(); 
+                // $contribucion->Ejecutar();
 
         header("location: ../../");
     }

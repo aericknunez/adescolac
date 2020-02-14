@@ -11,13 +11,24 @@ class Controles{
 			 return $num;
 	}
 
-	public function TotalProductos(){ /// total de productos registrados
+
+
+	public function CobrosMes($fecha){ /// para ver los gastos de un mes especifico // eje feha 05-2019
 		$db = new dbConn();
-	    $a = $db->query("SELECT sum(cantidad) FROM producto WHERE td = ".$_SESSION["td"]."");
+	    $a = $db->query("SELECT sum(total) FROM cuotas WHERE edo = 2 and td = ".$_SESSION["td"]." and fecha like '%-$fecha'");
 		    foreach ($a as $b) {
-		     return $b["sum(cantidad)"];
+		     $total=$b["sum(total)"];
 		    } $a->close();
+
+		    $x = $db->query("SELECT sum(cantidad) FROM cuotas_corte WHERE edo = 2 and td = ".$_SESSION["td"]." and fecha like '%-$fecha'");
+		    foreach ($x as $y) {
+		     $total2=$y["sum(cantidad)"];
+		    } $x->close();
+
+
+		    return $total + $total2;
 	}
+
 
 
 	public function CreditoPendiente(){ /// total de productos registrados
@@ -35,6 +46,61 @@ class Controles{
 		return 	$creditos - $abonos;
 
 	}
+
+
+	public function CuotasPendiente(){ /// total de productos registrados
+		$db = new dbConn();
+	    $a = $db->query("SELECT * FROM cuotas WHERE edo = 1 and td = ".$_SESSION["td"]."");
+		$cuotas = $a->num_rows;
+		$a->close();
+		return 	$cuotas;
+
+	}
+
+
+
+ 	public function CuotasCobradas($fecha){
+		$db = new dbConn();
+	    $a = $db->query("SELECT * FROM cuotas WHERE edo = 1 and td = ".$_SESSION["td"]." and fecha like '%-$fecha'");
+		    $cuotas = $a->num_rows;
+		$a->close();
+		return $cuotas;
+	}
+
+
+
+	public function SuspencionesActivas(){ /// total de productos registrados
+		$db = new dbConn();
+	    $a = $db->query("SELECT * FROM cuotas_corte WHERE edo = 1 and td = ".$_SESSION["td"]."");
+		$cuotas = $a->num_rows;
+		$a->close();
+		return 	$cuotas;
+
+	}
+
+
+
+
+	public function CuentaPorCobrar(){ 
+		$db = new dbConn();
+	    $a = $db->query("SELECT sum(total) FROM cuotas WHERE edo = 1 and td = ".$_SESSION["td"]."");
+		    foreach ($a as $b) {
+		     $total=$b["sum(total)"];
+		    } $a->close();
+
+		    $x = $db->query("SELECT sum(cantidad) FROM cuotas_corte WHERE edo = 1 and td = ".$_SESSION["td"]."");
+		    foreach ($x as $y) {
+		     $total2=$y["sum(cantidad)"];
+		    } $x->close();
+
+
+		    return $total + $total2;
+	}
+
+
+
+
+
 
 
 
