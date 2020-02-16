@@ -78,8 +78,7 @@ class Helpers{
         if($tipo == 1) return "Root";
         if($tipo == 2) return "Administrador";
         if($tipo == 3) return "Cajero";
-        if($tipo == 4) return "Usuario";
-        if($tipo == 5) return "Gerencia";
+        if($tipo == 4) return "Medidor";
     }
 
 

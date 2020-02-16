@@ -22,6 +22,7 @@ elseif(isset($_GET["cuotas"])) include_once 'system/asociado/cuotas.php'; // ver
 elseif(isset($_GET["cuotaspendientes"])) include_once 'system/asociado/cuotas_pendientes.php'; // ver unidades
 elseif(isset($_GET["productos_asociado"])) include_once 'system/asociado/productos_asociado.php'; // producto com asoc
 elseif(isset($_GET["ordenes_corte"])) include_once 'system/asociado/ordenes_corte.php'; // ver unidades
+elseif(isset($_GET["asociados_no_activos"])) include_once 'system/asociado/asociados_no_activos.php'; // ver unidades
 
 
 // contribuciones

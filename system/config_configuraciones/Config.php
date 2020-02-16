@@ -139,22 +139,17 @@ public function VerPrecios(){
        <th>Metros</th>
        <th>Mora</th>
        <th>Reconexion</th>
+       <th>Cuota Minima</th>
        <th>Fecha Pago</th>
      </tr>
    </thead>';
-
- 
-		$mts = $r["mts"];
-		$mora = $r["mora"];
-		$reconexion = $r["reconexion"];
-		$fecha_ultima = $r["fecha_ultima"];
-
 
 	   echo '<tbody>
 	     <tr>
 	      <td>'.$r["mts"].'</td>
 	      <td>'.$r["mora"].'</td>
 	      <td>'.$r["reconexion"].'</td>
+	      <td>'.$r["cuota_minima"].'</td>
 	      <td>'.$r["fecha_ultima"].' De cada mes</td>   
 	     </tr>
 	    
@@ -174,6 +169,7 @@ if($datos["mts"] != NULL or $datos["mora"] != NULL or $datos["reonexion"] != NUL
 	    $cambio["mts"] = $datos["mts"];
 	    $cambio["mora"] = $datos["mora"];
 	    $cambio["reconexion"] = $datos["reconexion"];
+	    $cambio["cuota_minima"] = $datos["cuota_minima"];
 	    $cambio["fecha_ultima"] = $datos["fecha_submit"];
 	    $cambio["hash"] = Helpers::HashId();
         $cambio["time"] = Helpers::TimeId();

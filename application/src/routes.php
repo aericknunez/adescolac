@@ -531,6 +531,54 @@ include_once '../../system/cuotas/Cuotas.php';
 
 
 
+///// cambiar numero de cuotas del asociado
+if($_REQUEST["op"]=="190"){ 
+include_once '../../system/asociado/Asociado.php';
+include_once '../../system/cuotas/Cuotas.php';
+	$cuota = new Cuotas;
+	$cuota->CambiarNumero($_POST["asociado"], $_POST["accion"]);
+}
+
+
+
+
+// ver precio am mts3
+if($_REQUEST["op"]=="191"){ 
+include_once '../../system/cuotas/Cuotas.php';
+	$cuota = new Cuotas;
+	$cuota->QuitarOtroPrecio($_POST["contador"]);
+}
+
+
+
+// cambio de precio am mts3
+if($_REQUEST["op"]=="192"){ 
+include_once '../../system/asociado/Asociado.php';
+include_once '../../system/cuotas/Cuotas.php';
+	$cuota = new Cuotas;
+	$cuota->AddOtroPrecio($_POST);
+}
+
+// ver precio am mts3
+if($_REQUEST["op"]=="193"){ 
+include_once '../../system/cuotas/Cuotas.php';
+	$cuota = new Cuotas;
+	$cuota->ModalPrecioAgua($_POST["contador"]);
+}
+
+
+
+//modal cuotas fijas
+if($_REQUEST["op"]=="194"){ // ver unidades
+include_once '../../system/asociado/Asociado.php';
+include_once '../../system/cuotas/Cuotas.php';
+	$cuota = new Cuotas;
+	$cuota->CuotaNoActivos($_POST["key"]);
+}
+
+
+
+
 //195
 if($_REQUEST["op"]=="195"){ // ver unidades
 include_once '../../system/asociado/Asociado.php';

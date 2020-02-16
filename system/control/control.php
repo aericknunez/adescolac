@@ -9,6 +9,8 @@ include_once 'application/common/Fechas.php';
 $cut = new Corte();
 
 $control = new Controles(); 
+
+if($_SESSION["tipo_cuenta"] != 4) {
 ?>
 
 <div class="row mb-3">
@@ -175,6 +177,10 @@ $control = new Controles();
 
 <canvas id="barChart" class="mb-4"></canvas>
 
+
+<?php } else {
+  Alerts::Mensajex("Puede buscar cada uno de los asociados para asignarle la lectura de contador","danger");
+} ?>
 
 
 

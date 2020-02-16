@@ -89,6 +89,7 @@ $(document).ready(function(){
 		$('#btn-pro').attr("href",'?modal=editasociado&key='+key);
 
 		$('#btn-unidades').attr("key",key);
+		$('#btn-cuotas-fijas').attr("key",key);
 		
 	});
 
@@ -263,6 +264,116 @@ $(document).ready(function(){
 		})
 	});
 
+
+
+
+
+
+/// llamar modal  de las cuotas fijas
+	$("body").on("click","#btn-cuotas-fijas",function(){ 
+		
+		$('#ModalVerAsociado').modal('hide');
+		$('#ModalCuotasFijas').modal('show');
+		
+		var key = $(this).attr('key');
+		var op = $(this).attr('op');
+		var dataString = 'op='+op+'&key='+key;
+
+		$.ajax({
+            type: "POST",
+            url: "application/src/routes.php",
+            data: dataString,
+            beforeSend: function () {
+               $("#vista-unidades").html('<div class="row justify-content-md-center" ><img src="assets/img/load.gif" alt=""></div>');
+            },
+            success: function(data) {            
+                $("#vista-unidades").html(data); // lo que regresa de la busquea 		
+            }
+        });
+
+   
+	});
+
+/// lcambiar numero de coutas asociado fijo
+	$("body").on("click","#cambiarnumero",function(){ 
+		
+		var asociado = $(this).attr('asociado');
+		var accion = $(this).attr('accion');
+		var op = $(this).attr('op');
+		var dataString = 'op='+op+'&asociado='+asociado+'&accion='+accion;
+
+		$.ajax({
+            type: "POST",
+            url: "application/src/routes.php",
+            data: dataString,
+            beforeSend: function () {
+               $("#vista-unidades").html('<div class="row justify-content-md-center" ><img src="assets/img/load.gif" alt=""></div>');
+            },
+            success: function(data) {            
+                $("#vista-unidades").html(data); // lo que regresa de la busquea 		
+            }
+        });
+
+	});
+
+
+
+//////////////////////////////////////////////////////
+
+/// cambio de precio
+	$("body").on("click","#cambioprecio",function(){ 
+		
+		$('#ModalCambioPrecio').modal('show');
+		
+		var contador = $(this).attr('contador');
+		var op = $(this).attr('op');
+		var dataString = 'op='+op+'&contador='+contador;
+
+		$.ajax({
+            type: "POST",
+            url: "application/src/routes.php",
+            data: dataString,
+            beforeSend: function () {
+               $("#vista_cambio").html('<div class="row justify-content-md-center" ><img src="assets/img/load.gif" alt=""></div>');
+            },
+            success: function(data) {            
+                $("#vista_cambio").html(data); // lo que regresa de la busquea 		
+            }
+        });
+
+		$('#pcontador').attr("value",contador);
+
+	});
+
+
+
+
+	$('#btn-cambioprecio').click(function(e){ /// ventas mensual
+	e.preventDefault();
+	$.ajax({
+			url: "application/src/routes.php?op=192",
+			method: "POST",
+			data: $("#form-cambioprecio").serialize(),
+			beforeSend: function () {
+				$('#btn-cambioprecio').html('<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Loading...').addClass('disabled');
+	        },
+			success: function(data){
+				$('#btn-cambioprecio').html('<i class="fa fa-save mr-1"></i> Guardar').removeClass('disabled');	      
+				$("#form-cambioprecio").trigger("reset");
+				$("#vista_cambio").html(data);	
+			}
+		})
+	});
+
+
+
+	$("body").on("click","#quitarprecio",function(){ // borrar unidad
+	var op = $(this).attr('op');
+	var contador = $(this).attr('contador');
+	    $.post("application/src/routes.php", {op:op, contador:contador}, function(data){
+		$("#vista_cambio").html(data);
+	   	 });
+	});
 
 
 

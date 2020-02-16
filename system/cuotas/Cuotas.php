@@ -19,10 +19,10 @@ class Cuotas {
                 $data["lectura_anterior"] = $this->LecturaAnterior($datos["unidad"]);
                 $data["lectura_actual"] = $datos["lectura"];
                 $data["consumo"] = $consumo;
-                $data["cantidad"] = $this->CantidadConsumo($consumo);
+                $data["cantidad"] = $this->CantidadConsumo($consumo, $datos["unidad"]);
                 $data["vencido"] = NULL;
                 $data["mora"] = NULL; 
-                $data["total"] = $this->CantidadConsumo($consumo);
+                $data["total"] = $this->CantidadConsumo($consumo, $datos["unidad"]);
                 $data["fecha"] = date("d-m-Y");
                 $data["fechaF"] = Fechas::Format(date("d-m-Y"));
                 $data["fechav"] = $this->DiaVencimiento();
@@ -62,6 +62,44 @@ class Cuotas {
         }
   }
 
+
+  public function AddOtroPrecio($datos){
+    $db = new dbConn();
+
+            if($datos["pcontador"] != NULL){
+                $data["contador"] = $datos["pcontador"];
+                $data["precio"] = $datos["pcantidad"];
+                $data["edo"] = 1; 
+                $data["hash"] = Helpers::HashId();
+                $data["time"] = Helpers::TimeId();
+                $data["td"] = $_SESSION["td"];
+                if ($db->insert("cuota_otro_precio", $data)) {
+                    Alerts::Alerta("success","Realizado!","Registro realizado correctamente!");  
+                    $this->ActualizarUltimaLectura($datos["unidad"], $datos["lectura"]);
+                } else {
+                  Alerts::Alerta("error","Error!","Algo Ocurrio :(");
+                }             
+              } else {
+                Alerts::Alerta("error","Error!","Faltan Datos :(");
+              }
+        
+        $this->ModalPrecioAgua($datos["pcontador"]);
+
+  }
+
+  public function QuitarOtroPrecio($contador){ // elimina precio
+    $db = new dbConn();
+
+        $data["edo"] = 0;
+        if(Helpers::DeleteId("cuota_otro_precio", "contador = '$contador' and td = ".$_SESSION["td"]."")){
+           Alerts::Alerta("success","Eliminado!","asociado eliminado correctamente!");
+        } else {
+            Alerts::Alerta("error","Error!","Algo Ocurrio!");
+        } 
+      $this->ModalPrecioAgua($contador);
+  }
+
+
   public function CompruebaCuota($datos){
     $db = new dbConn();
     $fechax = Fechas::Format(date("d-m-Y"));
@@ -75,6 +113,20 @@ class Cuotas {
     
     $a->close();
 
+  }
+
+
+    public function CompruebaOtroPrecio($contador){ /// falso no tieno otro precio
+    $db = new dbConn();
+ 
+       if ($r = $db->select("precio", "cuota_otro_precio", "WHERE contador = '$contador' and td = ".$_SESSION["td"]."")) {$precio = $r["precio"];
+      } unset($r); 
+
+        if($precio == NULL){
+          return FALSE;
+        } else{
+          return $precio;
+        }
   }
 
 
@@ -113,13 +165,25 @@ class Cuotas {
   }
 
 
-  public function CantidadConsumo($consumo){ // consumo en $$
+  public function PrecioAgua($contador){ // consumo en $$
+    $db = new dbConn();
+    
+    if($this->CompruebaOtroPrecio($contador) == FALSE){
+          if ($r = $db->select("mts", "precios", "WHERE td = ".$_SESSION["td"]."")) { 
+            $precio = $r["mts"];
+          } unset($r);    
+      } else {
+          $precio = $this->CompruebaOtroPrecio($contador);
+      }
+      return $precio;
+  }
+
+
+
+  public function CantidadConsumo($consumo, $contador){ // consumo en $$
     $db = new dbConn();
 
-    if ($r = $db->select("mts", "precios", "WHERE td = ".$_SESSION["td"]."")) { 
-        $precio = $r["mts"];
-    } unset($r);  
-
+    $precio = $this->PrecioAgua($contador);
     return $consumo * $precio;
 
   }
@@ -160,13 +224,12 @@ class Cuotas {
           <h1>'.Helpers::Dinero($r["total"]).'</h1>
           <p>Cuota de: '.Fechas::MesEscrito($r["fecha"]).' de '.Fechas::AnoFecha($r["fecha"]).'</p>';
           
-      if($this->CompruebaCorte($r["contador"]) == TRUE){ 
-        echo '<a id="cobrar" hash="'.$datos["hash"].'" op="202" total="'.$r["total"].'" class="btn btn-success btn-rounded">Cobrar</a>';
-      } else {
-        Alerts::Mensajex("Hay una órden de corte activa en éste contador, nates de continuar, debe cobrar esta orden","danger");
-        echo '<a href="?ordenes_corte" class="btn btn-danger btn-rounded">Ordenes de corte</a>';
-      }
+      if($this->CompruebaCorte($r["contador"]) != TRUE){ 
+        Alerts::Mensajex("Hay una órden de corte activa en éste contador, Puede cobrar las cuotas pendientes pero la orden de corte debe cancelarse por aparte","danger");
+        echo '<a href="?ordenes_corte" class="btn btn-danger btn-rounded">Ver Orden de corte</a>';
+      } 
         
+        echo '<a id="cobrar" hash="'.$datos["hash"].'" op="202" total="'.$r["total"].'" class="btn btn-success btn-rounded">Cobrar</a>';
 
 
         echo '</div>';
@@ -220,9 +283,10 @@ $a = $db->query("SELECT sum(total) FROM cuotas WHERE contador = '$contador' and 
     $db = new dbConn();
     $asociado = new Asociados();
 
+if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) { 
         if ($r = $db->select("*", "cuotas_corte", "WHERE hash = '".$datos["hash"]."' and td = ".$_SESSION["td"]."")) { 
 
-      Alerts::Mensajex("Cancele la orden de suspención, despues puede pagar las cuotas pendientes. La cantidad total adeudada es de " . Helpers::Dinero($this->TotalAdeudado($r["contador"])) ,"info");
+      Alerts::Mensajex("Orden de suspensión activa. La cantidad total adeudada es de " . Helpers::Dinero($this->TotalAdeudado($r["contador"])) ,"info");
 
          echo '<div class="text-center"><h2>'.$asociado->AsociadoNombre($r["asociado"]).'</h2>
          <h4>'.$r["contador"].'</h4>
@@ -235,6 +299,10 @@ $a = $db->query("SELECT sum(total) FROM cuotas WHERE contador = '$contador' and 
         echo '</div>';
 
         }  unset($r);   
+
+      } else {
+        Alerts:Mensajex("No tiene permisos para estar aqui","danger");
+      }
   }
 
 
@@ -255,6 +323,95 @@ public function CobrarSuspencion($datos){
   
 
     }
+
+
+
+  public function CuotaNoActivos($asociado){
+    $db = new dbConn();
+    $asoc = new Asociados();
+
+        if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) { 
+
+        echo '<div class="text-center"><h2>'.$asoc->AsociadoNombre($asociado).'</h2>';
+
+        if($_SESSION["cuota_cantidad"] == 1){
+        echo '<div class="d-inline-block">
+        <i class="fas fa-ban fa-lg red-text"></i>
+        </div>';
+        } else {
+        echo '<div class="d-inline-block">
+        <a id="cambiarnumero" op="190" asociado="'.$asociado.'" accion="2"><i class="fas fa-minus-circle fa-lg blue-text"></i></a>
+        </div>';
+        }
+
+
+        echo '<div class="d-inline-block ml-3 mr-3">
+        <h1 class="display-1 z-depth-1-half"><strong>'.$_SESSION["cuota_cantidad"].'</strong></h1>
+        </div>
+
+        <div class="d-inline-block">
+        <a id="cambiarnumero" op="190" asociado="'.$asociado.'" accion="1"><i class="fas fa-plus-circle fa-lg green-text"></i></a>
+        </div>
+            
+
+            <p>Total a cancelar</p>    
+
+                  <h1>'.Helpers::Dinero($r["total"]).'</h1>';
+                  
+                echo '<a class="btn btn-success btn-rounded">Cobrar</a>';
+
+
+                echo '</div>';
+
+        } else {
+        Alerts:Mensajex("No tiene permisos para estar aqui","danger");
+      }
+
+  }
+
+  
+
+
+  public function CambiarNumero($asociado, $accion = NULL){
+
+      if($_SESSION["cuota_cantidad"] != NULL and $accion == 1){
+         $_SESSION["cuota_cantidad"] =  $_SESSION["cuota_cantidad"] + 1;
+      }
+      if($_SESSION["cuota_cantidad"] != NULL and $accion == 2 and $_SESSION["cuota_cantidad"] > 0){
+         $_SESSION["cuota_cantidad"] =  $_SESSION["cuota_cantidad"] - 1;
+      }
+
+      if($_SESSION["cuota_cantidad"] == NULL and $accion == NULL){
+        $_SESSION["cuota_cantidad"] = 1;
+      }
+
+      if($_SESSION["cuota_cantidad"] == 0){
+        $_SESSION["cuota_cantidad"] = 1;
+      }
+
+      $this->CuotaNoActivos($asociado);
+  }
+
+
+
+  public function ModalPrecioAgua($contador){
+    $db = new dbConn();
+
+
+      echo '<h3>'.Helpers::Dinero($this->PrecioAgua($contador)).'</h3>';
+      if($this->CompruebaOtroPrecio($contador) == FALSE){
+        Alerts::Mensajex("Este contador tiene precio regular","info");
+      } else {
+        Alerts::Mensajex("Este contador ya cuenta con un precio especial","danger");
+        echo '<a id="quitarprecio" contador="'.$contador.'" op="191"  class="btn btn-danger btn-rounded">Quitar Precio</a>';
+      }
+      
+ 
+  }
+
+
+
+
 
 
 

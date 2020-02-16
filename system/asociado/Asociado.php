@@ -139,9 +139,11 @@ class Asociados {
                     <th>Nombre</th>
                     <th>Telefono</th>
                     <th>Estado</th>
-                    <th>Ver</th>
-                    <th>OP</th>
-                  </tr>
+                    <th>Ver</th>';
+              if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) {         
+              echo '<th>OP</th>';
+                  }
+              echo '</tr>
                 </thead>
                 <tbody>';
           $n = 1;
@@ -152,10 +154,13 @@ class Asociados {
                       <td>'.$b["nombre"].'</td>
                       <td>'.$b["telefono"].'</td>
                       <td>'.$edo.'</td>
-                      <td><a id="xver" op="188" key="'.$b["hash"].'"><i class="fas fa-search fa-lg green-text"></i></a></td>
-                      <td><a id="xdelete" hash="'.$b["hash"].'" op="186"><i class="fa fa-minus-circle fa-lg red-text"></i></a>
-                      <a id="print" hash="'.$b["hash"].'" ><i class="fa fa-print fa-lg blue-text"></i></a></td>
-                    </tr>';          
+                      <td><a id="xver" op="188" key="'.$b["hash"].'"><i class="fas fa-search fa-lg green-text"></i></a></td>';
+                 if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) {        
+              echo '<td><a id="xdelete" hash="'.$b["hash"].'" op="186"><i class="fa fa-minus-circle fa-lg red-text"></i></a>';
+
+              echo '<a id="print" hash="'.$b["hash"].'" ><i class="fa fa-print fa-lg blue-text"></i></a></td>
+                    </tr>';
+                    }          
               }
         echo '</tbody>
                 <tfoot>
@@ -164,9 +169,11 @@ class Asociados {
                     <th>Nombre</th>
                     <th>Documento</th>
                     <th>Telefono</th>
-                    <th>Ver</th>
-                    <th>OP</th>
-                  </tr>
+                    <th>Ver</th>';
+              if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) {         
+              echo '<th>OP</th>';
+                  }
+              echo '</tr>
                 </tfoot>
               </table>';
 
@@ -177,6 +184,58 @@ class Asociados {
 
 
 
+  public function AsociadosNoActivos(){
+      $db = new dbConn();
+          $a = $db->query("SELECT * FROM asociados WHERE edo = 2 and td = ".$_SESSION["td"]." order by id desc");
+          if($a->num_rows > 0){
+        echo '<table id="dtMaterialDesignExample" class="table table-sm table-striped" cellspacing="0" width="100%">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Telefono</th>
+                    <th>Estado</th>
+                    <th>Ver</th>';
+              if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) {         
+              echo '<th>OP</th>';
+                  }
+              echo '</tr>
+                </thead>
+                <tbody>';
+          $n = 1;
+              foreach ($a as $b) { ;
+                if($b["edo"] == 1) $edo = "Activo"; elseif($b["edo"] == 2) $edo = "Inactivo"; else $edo = "No Asociado";
+                echo '<tr>
+                      <td>'. $n ++ .'</td>
+                      <td>'.$b["nombre"].'</td>
+                      <td>'.$b["telefono"].'</td>
+                      <td>'.$edo.'</td>
+                      <td><a id="xver" op="188" key="'.$b["hash"].'"><i class="fas fa-search fa-lg green-text"></i></a></td>';
+                 if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) {        
+              echo '<td><a id="xdelete" hash="'.$b["hash"].'" op="186"><i class="fa fa-minus-circle fa-lg red-text"></i></a>';
+
+              echo '<a id="print" hash="'.$b["hash"].'" ><i class="fa fa-print fa-lg blue-text"></i></a></td>
+                    </tr>';
+                    }           
+              }
+        echo '</tbody>
+                <tfoot>
+                  <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Documento</th>
+                    <th>Telefono</th>
+                    <th>Ver</th>';
+              if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) {         
+              echo '<th>OP</th>';
+                  }
+              echo '</tr>
+                </tfoot>
+              </table>';
+
+          } $a->close();  
+
+  }
 
 
 
@@ -261,6 +320,8 @@ $this->VerUnidades($data["key"], 1);
                   <th scope="col">Saldo</th>';
                         if($ver == NULL){
                           echo '<th scope="col">Borrar</th>';
+                        } else {
+                          echo '<th scope="col">Precio Mts3</th>';
                         }
                   echo '</tr>
               </thead>
@@ -274,6 +335,11 @@ $this->VerUnidades($data["key"], 1);
                         <td>'.Helpers::Dinero($aso->TotalAdeudado($b["unidad"])).'</td>';
                         if($ver == NULL){
                           echo '<td><a id="delunidad" hash="'.$b["hash"].'" op="197" asociado="'.$asociado.'"><i class="fa fa-minus-circle fa-lg red-text"></i></a></td>';
+                        } else {
+                          echo '<td>';
+                          echo Helpers::Dinero($aso->PrecioAgua($b["unidad"]));
+                          echo '<a id="cambioprecio" contador="'.$b["unidad"].'" op="193">  |  <i class="fas fa-exclamation-circle fa-lg orange-text"></i> Cambiar</a>';
+                          echo '</td>';
                         }
                     echo '</tr>';          
               }
@@ -413,9 +479,12 @@ public function VerCuotas($vencidos = NULL){
                     <th>Contador</th>
                     <th>Lectura Anterior</th>
                     <th>Lectura Actual</th>
-                    <th>Total</th>
-                    <th>Estado</th>
-                  </tr>
+                    <th>Consumo</th>
+                    <th>Total</th>';
+                    if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) { 
+                 echo '<th>Estado</th>';
+               }
+                  echo '</tr>
                 </thead>
                 <tbody>';
           $n = 1;
@@ -427,9 +496,12 @@ public function VerCuotas($vencidos = NULL){
                       <td>'.$b["contador"].'</td>
                       <td>'.$b["lectura_anterior"].'</td>
                       <td>'.$b["lectura_actual"].'</td>
-                      <td>'.Helpers::Dinero($b["total"]).'</td>
-                      <td id="idcuota'.$b["hash"].'">'.$edo.'</td>
-                    </tr>';          
+                      <td>'.$b["consumo"].'</td>
+                      <td>'.Helpers::Dinero($b["total"]).'</td>';
+                      if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) { 
+                 echo '<td id="idcuota'.$b["hash"].'">'.$edo.'</td>';
+               }
+                  echo '</tr>';          
               }
         echo '</tbody>
                 <tfoot>
@@ -439,9 +511,11 @@ public function VerCuotas($vencidos = NULL){
                     <th>Contador</th>
                     <th>Lectura Anterior</th>
                     <th>Lectura Actual</th>
-                    <th>Total</th>
-                    <th>Estado</th>
-                  </tr>
+                    <th>Total</th>';
+                    if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) { 
+                 echo '<th>Estado</th>';
+               }
+                  echo '</tr>
                 </tfoot>
               </table>';
 
@@ -474,9 +548,11 @@ public function OrdenesCorte($vencidos = NULL){
                     <th>Asociado</th>
                     <th>Contador</th>
                     <th>Fecha</th>
-                    <th>Total Adeudado</th>
-                    <th>Estado</th>
-                  </tr>
+                    <th>Total Adeudado</th>';
+                    if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) { 
+                   echo '<th>Estado</th>';
+                 }
+                  echo '</tr>
                 </thead>
                 <tbody>';
           $n = 1;
@@ -487,9 +563,11 @@ public function OrdenesCorte($vencidos = NULL){
                       <td>'.$this->AsociadoNombre($b["asociado"]).'</td>
                       <td>'.$b["contador"].'</td>
                       <td>'.$b["fecha"].'</td>
-                      <td>'.Helpers::Dinero($asociado->TotalAdeudado($b["contador"])).'</td>
-                      <td id="idcuota'.$b["hash"].'">'.$edo.'</td>
-                    </tr>';          
+                      <td>'.Helpers::Dinero($asociado->TotalAdeudado($b["contador"])).'</td>';
+                    if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) { 
+                   echo '<td id="idcuota'.$b["hash"].'">'.$edo.'</td>';
+                 }
+                  echo '</tr>';          
               }
         echo '</tbody>
                 <tfoot>
@@ -498,9 +576,11 @@ public function OrdenesCorte($vencidos = NULL){
                     <th>Asociado</th>
                     <th>Contador</th>
                     <th>Fecha</th>
-                    <th>Total Adeudado</th>
-                    <th>Estado</th>
-                  </tr>
+                    <th>Total Adeudado</th>';
+                    if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) { 
+                   echo '<th>Estado</th>';
+                 }
+                  echo '</tr>
                 </tfoot>
               </table>';
 

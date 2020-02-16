@@ -19,16 +19,21 @@ $config = new Config();
   
   <div class="form-row">
 
-  <div class="col-md-6 mb-2 md-form">
+  <div class="col-md-4 mb-2 md-form">
       <label for="descripcion">Metros</label>
       <input type="text" class="form-control" id="mts" name="mts">
     </div>
 
-    <div class="col-md-6 mb-2 md-form">
+    <div class="col-md-4 mb-2 md-form">
       <label for="cod">Mora</label>
       <input type="text" class="form-control" id="mora" name="mora">
     </div>
 
+
+    <div class="col-md-4 mb-2 md-form">
+      <label for="cod">Cuota Minima</label>
+      <input type="text" class="form-control" id="cuota_minima" name="cuota_minima">
+    </div>
   </div>
 
 

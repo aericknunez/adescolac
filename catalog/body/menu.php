@@ -1,11 +1,11 @@
-
+<?php if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 2) { ?>
 
 <li><a href="?corte" class="waves-effect arrow-r"><i class="fas fa-user"></i> Corte Diario </a></li>
 
+<?php } ?>
 
 
-
-
+<?php if($_SESSION["tipo_cuenta"] != 4) { ?>
 
 <li><a class="collapsible-header waves-effect arrow-r"><i class="fas fa-cog"></i> Historial<i class="fa fa-angle-down rotate-icon"></i></a>
 <div class="collapsible-body">
@@ -24,7 +24,12 @@
 </li>
 
 
+<?php } ?>
 
+
+<?php if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) { 
+/// solo cajero
+?>
 
 
 <li><a class="collapsible-header waves-effect arrow-r"><i class="fas fa-cog"></i> Movimientos de Efectivo<i class="fa fa-angle-down rotate-icon"></i></a>
@@ -39,6 +44,9 @@
 </li>
 
 
+<?php } ?>
+
+
 
 
 
@@ -47,11 +55,23 @@
 <div class="collapsible-body">
 <ul class="list-unstyled">
 
+
+
 <li><a href="?asociaunidades" class="waves-effect"><i class="fas fa-address-book"></i> Ver Contadores</a></li>
+
+<?php if($_SESSION["tipo_cuenta"] != 4) { 
+/// solo cajero
+?>
+
 <li><a href="?cuotas" class="waves-effect"><i class="fas fa-money-bill-alt"></i> Todas las cuotas</a></li>
 
 <li><a href="?cuotaspendientes" class="waves-effect"><i class="fas fa-money-bill-alt"></i> Cuotas Pendientes</a></li>
+
+<li><a href="?asociados_no_activos" class="waves-effect"><i class="fas fa-money-bill-alt"></i> Cuotas Fijas</a></li>
+
 <li><a href="?ordenes_corte" class="waves-effect"><i class="fas fa-address-book"></i> Ordenes de Corte</a></li>
+
+<?php } ?>
 </ul>
 </div>
 </li>
@@ -61,6 +81,9 @@
 
 
 
+<?php if($_SESSION["tipo_cuenta"] != 4) { 
+/// solo cajero
+?>
 
 
 <li><a class="collapsible-header waves-effect arrow-r"><i class="far fa-user"></i> Asociados<i class="fa fa-angle-down rotate-icon"></i></a>
@@ -77,6 +100,7 @@
 </li>
 
 
+<?php } ?>
 
 
 
@@ -86,12 +110,14 @@
 
 
 
-
+<?php if($_SESSION["tipo_cuenta"] != 4) { 
+?>
 
 
 <li><a class="collapsible-header waves-effect arrow-r"><i class="fas fa-cog"></i> Facturas<i class="fa fa-angle-down rotate-icon"></i></a>
 <div class="collapsible-body">
 <ul class="list-unstyled">
+
 
 <!-- <li><a  class="waves-effect"><i class="fas fa-cog"></i> Opciones</a></li> -->
 <li><a href="system/imprimir/imprimir.php?op=1" class="waves-effect"><i class="fas fa-cogs"></i> Imprimir Facturas</a></li>
@@ -101,6 +127,8 @@
 </li>
 
 
+
+<?php } ?>
 
 
 
@@ -112,7 +140,12 @@
 <div class="collapsible-body">
 <ul class="list-unstyled">
 
+
+<?php if($_SESSION["tipo_cuenta"] != 4) { 
+?>
+
 <li><a href="?configuraciones" class="waves-effect"><i class="fas fa-cog"></i> Configuraciones</a></li>
+<?php } ?>
 
 <li><a href="?user" class="waves-effect arrow-r"><i class="fas fa-user"></i> Usuarios </a></li>
 
