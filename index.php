@@ -20,16 +20,13 @@ if ($seslog->login_check() == TRUE) {
 		}
 	 header("location: ./");
 	}
-    //include_once 'catalog/login.php';
-    	if(Helpers::ServerDomain() == FALSE){
+ 
 		  		if($_SESSION["inicio"] == NULL){
 					include_once 'catalog/login_user.php';
 				} else {
 					include_once 'catalog/login.php';
 				}
-		} else {
-			include_once 'catalog/login.php';
-		}   
+
 
 }
 /////////
