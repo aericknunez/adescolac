@@ -631,7 +631,7 @@ public function OrdenesCorte($vencidos = NULL){
               </table>';
 
           } else {
-            Alerts::Mensajex("No se encontraron cuotas para mostrar","danger");
+            Alerts::Mensajex("No se encontraron ordenes de corte para mostrar","danger");
           } $a->close();  
 
   }
