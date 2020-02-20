@@ -14,12 +14,12 @@ if ($_GET["op"] == 1) { /// imprimir listado de cuotas pendientes
 
 
 
-// if($_GET["op"] == 2){
-//     include_once '../../system/asociado/Asociado.php';
-//     $asociado = new Asociados(); 
-//     echo '<h2 class="h2-responsive">Productos adquiridos por el asociado</h2>';
-//     $asociado->VerProductosAsociado($_GET["as"], $_GET["inicio"], $_GET["fin"]);
+if($_GET["op"] == 2){
+	include_once '../../system/asociado/Asociado.php';
+    include_once 'Imprime.php';
+    $print = new Imprime(); 
+    $print->CrearFactura($_GET["contador"], $_GET["fecha"]); 
 
-//     $dir = "http://". $_SERVER['HTTP_HOST'] . "/acamsal/?asociadover";
-// }
+    // $dir = "http://". $_SERVER['HTTP_HOST'] . "/acamsal/?asociadover";
+}
 ?>

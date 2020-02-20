@@ -48,6 +48,7 @@ class Asociados {
               $data["telefono"] = $datos["telefono"];
               $data["direccion"] = $datos["direccion"];
               $data["comentarios"] = $datos["comentarios"];
+              $data["edo"] = $datos["edo"];
               $data["time"] = Helpers::TimeId();
               $hash = $datos["hash"];
               if (Helpers::UpdateId("asociados", $data, "hash = '$hash' and td = ".$_SESSION["td"]."")) {
@@ -214,7 +215,9 @@ class Asociados {
                  if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) {        
               echo '<td><a id="xdelete" hash="'.$b["hash"].'" op="186"><i class="fa fa-minus-circle fa-lg red-text"></i></a>';
 
-              echo '<a id="print" hash="'.$b["hash"].'" ><i class="fa fa-print fa-lg blue-text"></i></a></td>
+              echo '<a id="print" hash="'.$b["hash"].'" ><i class="fa fa-print fa-lg blue-text"></i></a>
+
+              <a id="btn-cuotas-fijas" op="194" key="'.$b["hash"].'" class="badge badge-pill light-blue"><i class="fas fa-money-bill-alt fa-lg"></i> COBRAR</a></td>
                     </tr>';
                     }           
               }
@@ -223,8 +226,8 @@ class Asociados {
                   <tr>
                     <th>#</th>
                     <th>Nombre</th>
-                    <th>Documento</th>
                     <th>Telefono</th>
+                    <th>Estado</th>
                     <th>Ver</th>';
               if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) {         
               echo '<th>OP</th>';
@@ -266,9 +269,30 @@ class Asociados {
                 </tbody>
               </table>'; 
 
+
+if($r["edo"] == 1){
+  $this->VerUnidades($data["key"], 1);
+} elseif($r["edo"] == 2){
+ Alerts::Mensajex("Este usuario esta Inactivo","info");
+ $fijas = new CuotasFijas();
+   if($fijas->BuscarCuotas($data["key"]) == TRUE){
+    Alerts::Mensajex("la ultima cuota cancelada es: <strong>" . Fechas::MesEscrito("01-". $fijas->UltimaCuota($data["key"])) . " de " . Fechas::AnoFecha("01-". $fijas->UltimaCuota($data["key"])) . "</strong>","primary");
+   } else {
+     Alerts::Mensajex("Este usuario no ha cancelado ninguna cuota","warning");
+   }
+
+
+} elseif($r["edo"] == 3){
+
+} else {
+ Alerts::Mensajex("Este usuario esta desactivado","danger");
+}
+
+
         }  unset($r); 
 
-$this->VerUnidades($data["key"], 1);
+
+
 
 
   }
@@ -282,23 +306,45 @@ $this->VerUnidades($data["key"], 1);
   public function AddUnidades($datos){
     $db = new dbConn();
       if($datos["unidad"] != NULL or $datos["lectura"] != NULL){ // comprueba si todos los datos requeridos estan llenos
+             
+            if($this->CompruebaContador($datos["unidad"]) == TRUE){
+
                 $datos["edo"] = 1;
                 $datos["hash"] = Helpers::HashId();
                 $datos["time"] = Helpers::TimeId();
                 $datos["td"] = $_SESSION["td"];
                 if ($db->insert("asociados_unidades", $datos)) {
+
+            $datax["edo"] = 1; ///  modifica al usuario como activo
+            Helpers::UpdateId("asociados", $datax, "hash = '".$datos["asociado"]."' and td = ".$_SESSION["td"]."");
+
                     Alerts::Alerta("success","Realizado!","Registro realizado correctamente!");  
                 }
 
-        } else {
-          Alerts::Alerta("error","Error!","Faltan Datos!");
-        }
+              } else {
+                Alerts::Alerta("error","Error!","Ya se registro este contador!"); 
+              }
+          } else { // comprueba contador
+              Alerts::Alerta("error","Error!","Faltan Datos!");
+          }
 
       $this->VerUnidades($datos["asociado"]);
 
   }
 
 
+
+  public function CompruebaContador($contador){ 
+    $db = new dbConn();
+
+    $a = $db->query("SELECT * FROM asociados_unidades WHERE unidad = '$contador' and td = ".$_SESSION["td"]."");
+    if($a->num_rows == 0){
+      return true; /// no existe registro
+    } else {
+      return false;
+    } $a->close();
+
+  }
 
 
 

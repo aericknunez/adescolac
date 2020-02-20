@@ -515,6 +515,7 @@ include_once '../../system/asociado/Asociado.php';
 if($_REQUEST["op"]=="188"){ // ver asociado
 include_once '../../system/asociado/Asociado.php';
 include_once '../../system/cuotas/Cuotas.php';
+include_once '../../system/cuotas/CuotasFijas.php';
 	$asociado = new Asociados;
 	$asociado->VistaAsociado($_POST);
 }
@@ -535,6 +536,8 @@ include_once '../../system/cuotas/Cuotas.php';
 if($_REQUEST["op"]=="190"){ 
 include_once '../../system/asociado/Asociado.php';
 include_once '../../system/cuotas/Cuotas.php';
+include_once '../../system/cuotas/CuotasFijas.php';
+include_once '../common/Dinero.php';
 	$cuota = new Cuotas;
 	$cuota->CambiarNumero($_POST["asociado"], $_POST["accion"]);
 }
@@ -572,6 +575,9 @@ include_once '../../system/cuotas/Cuotas.php';
 if($_REQUEST["op"]=="194"){ // ver unidades
 include_once '../../system/asociado/Asociado.php';
 include_once '../../system/cuotas/Cuotas.php';
+include_once '../../system/cuotas/CuotasFijas.php';
+include_once '../common/Dinero.php';
+
 	$cuota = new Cuotas;
 	$cuota->CuotaNoActivos($_POST["key"]);
 }
@@ -651,6 +657,15 @@ include_once '../../system/cuotas/Cuotas.php';
 
 
 
+
+///////////////////////////// cuotas fijas /////////
+
+//// agregar cuotas
+if($_REQUEST["op"]=="250"){ 
+include_once '../../system/cuotas/CuotasFijas.php';
+	$cuotas = new CuotasFijas();
+	$cuotas->AddCuota($_POST);
+}
 
 
 

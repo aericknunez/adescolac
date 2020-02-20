@@ -43,7 +43,7 @@ if($_SESSION["tipo_cuenta"] != 4) {
         <a type="button" class="btn-floating btn-lg info-color ml-4 waves-effect waves-light"><i class="fas fa-credit-card" aria-hidden="true"></i></a>
       </div>
       <div class="col-md-9 col-9 text-right pr-4">
-        <h5 class="ml-4 mt-4 mb-2 font-weight-bold"><?php echo Helpers::Dinero($cut->GastoMes(date("d-m-Y"))); ?></h5>
+        <h5 class="ml-4 mt-4 mb-2 font-weight-bold"><?php echo Helpers::Dinero($cut->GastoMes(date("m-Y"))); ?></h5>
         <p class="font-small grey-text">Gastos Mes</p>
       </div>
     </div>
@@ -61,7 +61,7 @@ if($_SESSION["tipo_cuenta"] != 4) {
         <a type="button" class="btn-floating btn-lg success-color lighten-1 ml-4 waves-effect waves-light"><i class="fas fa-dollar-sign" aria-hidden="true"></i></a>
       </div>
       <div class="col-md-9 col-9 text-right pr-4">
-        <h5 class="ml-4 mt-4 mb-2 font-weight-bold"><?php echo Helpers::Dinero($control->CobrosMes(date("d-m-Y"))); ?></h5>
+        <h5 class="ml-4 mt-4 mb-2 font-weight-bold"><?php echo Helpers::Dinero($control->CobrosMes(date("m-Y"))); ?></h5>
         <p class="font-small grey-text">Cobros Mes</p>
       </div>
     </div>
@@ -78,7 +78,7 @@ if($_SESSION["tipo_cuenta"] != 4) {
         <a type="button" class="btn-floating btn-lg red accent-2 ml-4 waves-effect waves-light"><i class="fas fa-money-bill" aria-hidden="true"></i></a>
       </div>
       <div class="col-md-9 col-9 text-right pr-4">
-        <h5 class="ml-4 mt-4 mb-2 font-weight-bold"><?php echo Helpers::Dinero($control->CobrosMes(date("d-m-Y")) - $cut->GastoMes(date("d-m-Y"))); ?></h5>
+        <h5 class="ml-4 mt-4 mb-2 font-weight-bold"><?php echo Helpers::Dinero($control->CobrosMes(date("m-Y")) - $cut->GastoMes(date("m-Y"))); ?></h5>
         <p class="font-small grey-text">Efectivo</p>
       </div>
     </div>
@@ -128,7 +128,7 @@ if($_SESSION["tipo_cuenta"] != 4) {
         <a type="button" class="btn-floating btn-lg success-color ml-4 waves-effect waves-light"><i class="fas fa-chart-line" aria-hidden="true"></i></a>
       </div>
       <div class="col-md-7 col-7 text-right pr-4">
-        <h5 class="ml-4 mt-4 mb-2 font-weight-bold"><?php echo Helpers::Entero($control->CuotasCobradas(date("d-m-Y"))); ?></h5>
+        <h5 class="ml-4 mt-4 mb-2 font-weight-bold"><?php echo Helpers::Entero($control->CuotasCobradas(date("m-Y"))); ?></h5>
         <p class="font-small grey-text">Cuotas Cobradas</p>
       </div>
     </div>

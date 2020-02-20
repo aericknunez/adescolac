@@ -12,11 +12,17 @@ class Cuotas {
 
           if($this->CompruebaCuota($datos) == TRUE){
             /// aqui debe ir el registro de la nueva cuota
-                  $consumo = $this->ConsumoAgua($this->LecturaAnterior($datos["unidad"]), $datos["lectura"]);
+
+
+
+                $consumo = $this->ConsumoAgua($this->LecturaAnterior($datos["unidad"]), $datos["lectura"]);
+                $lectura_anterior = $this->LecturaAnterior($datos["unidad"]);
+
+                if($lectura_anterior <= $datos["lectura"]){ 
 
                 $data["asociado"] = $datos["asociado"];
                 $data["contador"] = $datos["unidad"];
-                $data["lectura_anterior"] = $this->LecturaAnterior($datos["unidad"]);
+                $data["lectura_anterior"] = $lectura_anterior;
                 $data["lectura_actual"] = $datos["lectura"];
                 $data["consumo"] = $consumo;
                 $data["cantidad"] = $this->CantidadConsumo($consumo, $datos["unidad"]);
@@ -38,7 +44,9 @@ class Cuotas {
                   Alerts::Alerta("error","Error!","Algo Ocurrio :(");
                 }
 
-
+              } else {
+                Alerts::Alerta("error","Error!","La lectura actual es menor que la anterior!");
+              }
 
           } else {
             Alerts::Alerta("error","Error!","Ya existe un registro en esta fecha!");
@@ -184,7 +192,13 @@ class Cuotas {
     $db = new dbConn();
 
     $precio = $this->PrecioAgua($contador);
-    return $consumo * $precio;
+
+    if($precio < 2){
+      $total =  2;
+    } else {
+      $total =  $consumo * $precio;
+    }
+    return $total;
 
   }
 
@@ -329,8 +343,21 @@ public function CobrarSuspencion($datos){
   public function CuotaNoActivos($asociado){
     $db = new dbConn();
     $asoc = new Asociados();
-
+    $fijas = new CuotasFijas();
+        /// aqui verifico si tiene permisos 1 o 3
         if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) { 
+
+
+
+      if($_SESSION["cuota_cantidad"] == NULL){ /// si no hay cuota se asignara valor 1
+        $_SESSION["cuota_cantidad"] = 1;
+      }
+
+        if ($r = $db->select("cuota_minima", "precios", "WHERE td = ".$_SESSION["td"]."")) { 
+            $cuota_minima = $r["cuota_minima"];
+          } unset($r); 
+
+       $total = $cuota_minima * $_SESSION["cuota_cantidad"];   
 
         echo '<div class="text-center"><h2>'.$asoc->AsociadoNombre($asociado).'</h2>';
 
@@ -356,10 +383,28 @@ public function CobrarSuspencion($datos){
 
             <p>Total a cancelar</p>    
 
-                  <h1>'.Helpers::Dinero($r["total"]).'</h1>';
-                  
-                echo '<a class="btn btn-success btn-rounded">Cobrar</a>';
+                  <h1>'.Helpers::Dinero($total).'</h1>';
 
+                  echo '<p>'.Dinero::DineroEscrito($total).'</p>'; 
+
+
+                if($fijas->BuscarCuotas($asociado) == TRUE){
+
+                  $ultima = $fijas->UltimaCuota($asociado);
+                  $mes = Fechas::MesSuma("01-" . $ultima , $_SESSION["cuota_cantidad"]);
+
+                    echo '<p><strong>Hasta '.Fechas::MesEscrito("01-". $mes) . " de " . Fechas::AnoFecha("01-". $mes).'</strong></p>';
+                } else {
+                  $ultima = date("m-Y");
+                  $mes = Fechas::MesSuma("01-" . $ultima , $_SESSION["cuota_cantidad"]);
+
+
+                    echo '<p><strong>Hasta '.Fechas::MesEscrito("01-". $mes) . " de " . Fechas::AnoFecha("01-".  $mes).'</strong></p>';
+                }
+                
+                  
+                echo '<a id="CobrarNoActivo" asociado="'.$asociado.'" op="250" cantidad="'.$_SESSION["cuota_cantidad"].'" cuota="'.$cuota_minima.'" class="btn btn-success btn-rounded">Cobrar</a>';
+                
 
                 echo '</div>';
 

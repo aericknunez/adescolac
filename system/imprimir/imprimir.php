@@ -12,6 +12,7 @@ if ($seslog->login_check() == TRUE) {
 
 include_once '../../application/common/Fechas.php';
 include_once '../../application/common/Alerts.php';
+include_once '../../application/common/Dinero.php';
 
 ?>
 
@@ -32,8 +33,8 @@ include_once '../../application/common/Alerts.php';
 </head><body class="hidden-sn navy-blue-skin">
     
 <!-- preloader -->
-<!-- 
-<div id="mdb-preloader" class="flex-center">
+
+<!-- <div id="mdb-preloader" class="flex-center">
     <div class="preloader-wrapper big active crazy">
         <div class="spinner-layer spinner-blue-only">
           <div class="circle-clipper left">

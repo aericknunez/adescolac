@@ -15,18 +15,22 @@ class Controles{
 
 	public function CobrosMes($fecha){ /// para ver los gastos de un mes especifico // eje feha 05-2019
 		$db = new dbConn();
-	    $a = $db->query("SELECT sum(total) FROM cuotas WHERE edo = 2 and td = ".$_SESSION["td"]." and fecha like '%-$fecha'");
+	    $a = $db->query("SELECT sum(total) FROM cuotas WHERE fecha like '%-$fecha' and edo = 2 and td = ".$_SESSION["td"]."");
 		    foreach ($a as $b) {
 		     $total=$b["sum(total)"];
 		    } $a->close();
 
-		    $x = $db->query("SELECT sum(cantidad) FROM cuotas_corte WHERE edo = 2 and td = ".$_SESSION["td"]." and fecha like '%-$fecha'");
+		    $x = $db->query("SELECT sum(cantidad) FROM cuotas_corte WHERE fecha like '%-$fecha'  and edo = 2 and td = ".$_SESSION["td"]."");
 		    foreach ($x as $y) {
 		     $total2=$y["sum(cantidad)"];
 		    } $x->close();
 
-
-		    return $total + $total2;
+	    $a = $db->query("SELECT sum(cuota) FROM cuotas_fijas WHERE fecha_pago like '%-$fecha' and edo = 1 and td = ".$_SESSION["td"]."");
+		    foreach ($a as $b) {
+		     $totales = $b["sum(cuota)"];
+		    } $a->close();
+		    $dato = $total + $total2 + $totales;
+		    return $dato;
 	}
 
 

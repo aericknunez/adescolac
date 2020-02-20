@@ -27,24 +27,6 @@
 <?php } ?>
 
 
-<?php if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) { 
-/// solo cajero
-?>
-
-
-<li><a class="collapsible-header waves-effect arrow-r"><i class="fas fa-cog"></i> Movimientos de Efectivo<i class="fa fa-angle-down rotate-icon"></i></a>
-<div class="collapsible-body">
-<ul class="list-unstyled">
-
-<li><a href="?gastos" class="waves-effect"><i class="fas fa-cog"></i> Gastos y Compras</a></li>
-<li><a href="?entradas" class="waves-effect"><i class="fas fa-cogs"></i> Entrada de Efectivo</a></li>
-
-</ul>
-</div>
-</li>
-
-
-<?php } ?>
 
 
 
@@ -75,6 +57,36 @@
 </ul>
 </div>
 </li>
+
+
+
+
+
+
+
+
+
+
+<?php if($_SESSION["tipo_cuenta"] == 1 or $_SESSION["tipo_cuenta"] == 3) { 
+/// solo cajero
+?>
+
+
+<li><a class="collapsible-header waves-effect arrow-r"><i class="fas fa-cog"></i> Movimientos de Efectivo<i class="fa fa-angle-down rotate-icon"></i></a>
+<div class="collapsible-body">
+<ul class="list-unstyled">
+
+<li><a href="?gastos" class="waves-effect"><i class="fas fa-cog"></i> Gastos y Compras</a></li>
+<li><a href="?entradas" class="waves-effect"><i class="fas fa-cogs"></i> Entrada de Efectivo</a></li>
+
+</ul>
+</div>
+</li>
+
+
+<?php } ?>
+
+
 
 
 
@@ -121,6 +133,8 @@
 
 <!-- <li><a  class="waves-effect"><i class="fas fa-cog"></i> Opciones</a></li> -->
 <li><a href="system/imprimir/imprimir.php?op=1" class="waves-effect"><i class="fas fa-cogs"></i> Imprimir Facturas</a></li>
+
+<li><a href="?facturasver" class="waves-effect"><i class="fas fa-print"></i> Ver Facturas</a></li>
 
 </ul>
 </div>

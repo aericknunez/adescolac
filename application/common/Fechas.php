@@ -104,6 +104,14 @@ class Fechas{
         return $mes;  
     }
 
+    public function MesAnio($fecha){ // saca el mes que se esta cancelando
+        $mes = self::MesPago($fecha);
+        $anio = self::AnoFecha($fecha);
+        return $mes . "-" . $anio;  
+    }
+
+
+
      public static function Format($fecha){  
         $format=strtotime($fecha);
         return $format;

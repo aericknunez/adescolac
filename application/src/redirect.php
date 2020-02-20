@@ -63,6 +63,9 @@ elseif(isset($_GET["gra_clientes"])) include_once 'system/historial/gra_clientes
 elseif(isset($_GET["gra_semestre"])) include_once 'system/historial/gra_semestre.php';
 
 
+// facturas
+elseif(isset($_GET["facturasver"])) include_once 'system/facturas/facturas_ver.php';
+
 
 // Panel de Control
 elseif(isset($_GET["control"])) include_once 'system/control/control.php';
