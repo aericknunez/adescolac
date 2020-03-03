@@ -11,7 +11,9 @@ class Imprime {
     $asoc = new Asociados();
 
     $a = $db->query("SELECT * FROM asociados_unidades WHERE edo = 1 and td = ".$_SESSION["td"]."");
+    $num = 0;
     foreach ($a as $b) {
+    $num = $num + 1;
         /// aqui genero todas las notas de cobro segun contador
         echo '<hr><div class="row">
               <div class="col-6">
@@ -87,6 +89,12 @@ class Imprime {
                 </table> <hr>';
                   unset($total);
                   unset($count);
+
+    if ($num == 3) {
+        echo '<div class="saltoDePagina"></div>';
+        $num = 0;
+      }
+
     } $a->close();
 
   }

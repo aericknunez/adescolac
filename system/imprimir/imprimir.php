@@ -30,7 +30,22 @@ include_once '../../application/common/Dinero.php';
     <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../assets/css/mdb.min.css" rel="stylesheet">
 
-</head><body class="hidden-sn navy-blue-skin">
+
+  <style>
+    /* cuando vayamos a imprimir ... */
+    @media print{
+      /* indicamos el salto de pagina */
+      .saltoDePagina{
+        display:block;
+        page-break-before:always;
+      }
+    }
+  </style>
+
+  
+</head>
+
+<body class="hidden-sn navy-blue-skin">
     
 <!-- preloader -->
 
