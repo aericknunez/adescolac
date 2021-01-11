@@ -47,6 +47,12 @@
 <ul class="collapsible collapsible-accordion">
 
 <?php include_once 'menu.php'; ?>
+
+
+<?
+echo '<small>' . date("d-m-Y") . " - " . date("H:i:s") . '</small>';
+ ?>
+
     <hr>
     <small> Powered By</small>  
     <a href="https://www.hibridosv.com" target="_blank"><img src="assets/img/logo/lgb.png" class="img-fluid flex-center"></a>

@@ -24,7 +24,7 @@ if($cut->UltimaFecha() != date("d-m-Y")){ // comprobacion de corte
   <?php if($_SESSION["root_tipo_sistema"] != 3) { // para los que no tienen planilla aqui esta la opcion?>
   <option value="4">ADELANTO A PERSONAL</option>
   <?php } ?>
-  <option value="5">CHEQUES</option>
+  <option value="5">CHEQUES Y TRANSFERENCIAS</option>
 </select>
 Descripci&oacuten
 <textarea type="text" id="descripcion" name="descripcion" class="form-control mb-3"></textarea>
