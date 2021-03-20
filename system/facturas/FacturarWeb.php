@@ -8,6 +8,7 @@ public function PagoCuota($hash){ /// obtiene el json que se envia a la impresor
 		$db = new dbConn();
 
 $parametros["hash"] = $hash;
+$parametros["tipoticket"] = 1;
 
 
 if ($r = $db->select("*", "cuotas", "WHERE hash = '$hash'")) { 
