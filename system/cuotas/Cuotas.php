@@ -190,17 +190,18 @@ class Cuotas {
 
   public function CantidadConsumo($consumo, $contador){ // consumo en $$
     $db = new dbConn();
-
     $precio = $this->PrecioAgua($contador);
-
-    if($precio < 2){
-      $total =  2;
-    } else {
-      $total =  $consumo * $precio;
-    }
-    return $total;
-
+      $total_con =  $consumo * $precio;
+      if($total_con > 2){
+          $total = $total_con;
+      } else {
+          $total = 2;
+      }
+      return $total;
   }
+
+
+
 
 
   public function DiaVencimiento(){ // consumo en $$
@@ -260,13 +261,13 @@ public function Cobrar($datos){
     $data["dia_cancel"] = date("d-m-Y");
     $data["dia_cancelF"] = Fechas::Format(date("d-m-Y"));
     $data["edo"] = 2;
-    if (Helpers::UpdateId("cuotas", $data, "hash = '".$datos["hash"]."' and edo = 1 and td = ".$_SESSION["td"]."")) {
-        Alerts::Alerta("success","Realizado!","Cambio realizado exitsamente!");        
+if (Helpers::UpdateId("cuotas", $data, "hash = '".$datos["hash"]."' and edo = 1 and td = ".$_SESSION["td"]."")) {
+    Alerts::Alerta("success","Realizado!","Cambio realizado exitsamente!");        
 
-      } else {
-      Alerts::Alerta("error","Error!","Faltan Datos!");
-      }
-  
+  } else {
+  Alerts::Alerta("error","Error!","Faltan Datos!");
+  }
+
 
     }
 

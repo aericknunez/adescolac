@@ -68,6 +68,12 @@ echo '<script type="text/javascript" src="assets/js/query/conf_config.js?v='.$nu
 } 
 
 
+elseif(isset($_GET["root"])) {
+
+} 
+
+
+
 elseif(isset($_GET["user"])) {
 echo '<script type="text/javascript" src="assets/js/query/user.js?v='.$numero.'"></script>';
 } 

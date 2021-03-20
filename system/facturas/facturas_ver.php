@@ -7,6 +7,8 @@ include_once 'application/common/Fechas.php';
 include_once 'system/asociado/Asociado.php';
 $fact = new Facturas(); 
 
+include_once 'system/control/Controles.php';
+$control = new Controles(); 
 ?>
 
 <div id="destino"></div>

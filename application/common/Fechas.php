@@ -6,7 +6,7 @@ class Fechas{
 	}
 
 	
-	public function DiasPendientes($iden){ // iden del contrato solo para usuarios nuevos
+	static public function DiasPendientes($iden){ // iden del contrato solo para usuarios nuevos
     	$db = new dbConn();
     	
     if ($r = $db->select("activacionF, proximo_pagoF", "contratos", "WHERE id = '$iden'")) { 
@@ -20,7 +20,7 @@ class Fechas{
     }
 
 
-    public function SiguientePago($fecha){ // fecha completa de cobro
+    static public function SiguientePago($fecha){ // fecha completa de cobro
         $dia=substr($fecha,0,2);
         $mes=substr($fecha,3,2);
         $anio= date("Y");
@@ -33,31 +33,31 @@ class Fechas{
         return $dia . "-" . $mes . "-" . $anio;
     }
 
-    public function DiaSiguiente($fecha){ // fecha completa de cobro
+    static public function DiaSiguiente($fecha){ // fecha completa de cobro
         return date("d-m-Y", strtotime($fecha."+ 1 days")); 
     }
 
-    public function DiaAnterior($fecha){ // dia anterior  (month para mes)
+    static public function DiaAnterior($fecha){ // dia anterior  (month para mes)
         return date("d-m-Y", strtotime($fecha."- 1 days"));
     }
 
-    public function DiaResta($fecha,$dias){ // dia anterior 
+    static public function DiaResta($fecha,$dias){ // dia anterior 
             return date("d-m-Y", strtotime($fecha."- ".$dias." days")); 
     }
 
-    public function DiaSuma($fecha,$dias){ // dia anterior 
+    static public function DiaSuma($fecha,$dias){ // dia anterior 
             return date("d-m-Y", strtotime($fecha."+ ".$dias." days")); 
     }    
 
     public function MesResta($fecha,$meses){ // mes anterior (lleva fecha entera de entrada)
             return date("m-Y", strtotime($fecha."- ".$meses." month")); 
     }
-    public function MesSuma($fecha,$meses){ // mes anterior (lleva fecha entera de entrada)
+    static public function MesSuma($fecha,$meses){ // mes anterior (lleva fecha entera de entrada)
             return date("m-Y", strtotime($fecha."+ ".$meses." month")); 
     }
 
 
-    public function NombreDia($fecha){ // nombre del dia segun fecha 
+    static public function NombreDia($fecha){ // nombre del dia segun fecha 
             $fecha = strtotime($fecha); //a timestamp 
 
             //el parametro w en la funcion date indica que queremos el dia de la semana 
@@ -73,7 +73,7 @@ class Fechas{
             }  
     }
 
-    public function FechaPagoProximo($fecha){ // usuarios nuevos
+    static public function FechaPagoProximo($fecha){ // usuarios nuevos
         
         if($fecha < date("d")) { 
         $pmes = 1 + date("m"); $ano = date("Y"); }
@@ -89,22 +89,22 @@ class Fechas{
     }
 
 
-    public function MesPago($fecha){ // saca el mes que se esta cancelando
+    static public function MesPago($fecha){ // saca el mes que se esta cancelando
         $mes=substr($fecha,3,2);
         return $mes;  
     }
 
-    public function DiaFecha($fecha){ // saca eldia de una fecha
+    static public function DiaFecha($fecha){ // saca eldia de una fecha
         $dia=substr($fecha,0,2);
         return $dia;  
     }
 
-    public function AnoFecha($fecha){ // saca el mes que se esta cancelando
+    static public function AnoFecha($fecha){ // saca el mes que se esta cancelando
         $mes=substr($fecha,6,4);
         return $mes;  
     }
 
-    public function MesAnio($fecha){ // saca el mes que se esta cancelando
+    static public function MesAnio($fecha){ // saca el mes que se esta cancelando
         $mes = self::MesPago($fecha);
         $anio = self::AnoFecha($fecha);
         return $mes . "-" . $anio;  
@@ -117,7 +117,7 @@ class Fechas{
         return $format;
      }
 
-     public function FechaEscrita($fecha)
+     static public function FechaEscrita($fecha)
     {  
         $dia=substr($fecha,0,2);
         $mes=substr($fecha,3,2);
@@ -166,7 +166,7 @@ class Fechas{
     }
 
 
-public function MesEscrito($fecha)
+static public function MesEscrito($fecha)
     {  
         $mes=substr($fecha,3,2);
               
