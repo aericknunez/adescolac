@@ -203,7 +203,9 @@ $(document).ready(function(){
             },
             success: function(data) {  
             	$("#idcuota"+hash).html('CANCELADO');          
-                $("#destino").html(data); // lo que regresa de la busquea 		
+                $("#destino").html(data); // lo que regresa de la busquea 	
+
+                LoadData(hash);  	
             }
         });
 
@@ -211,6 +213,62 @@ $(document).ready(function(){
 		
 
 	});
+
+
+
+
+//////////////////// manda el json  para imprimir
+function LoadData(hash){
+    $.ajax({
+        type: "POST",
+        url: "application/src/routes.php?op=260&hash="+hash,
+        datatype: 'json',
+        success: function(data) {  
+            var datos = data;  
+            var json = $.parseJSON(datos);
+            // console.log(json);    
+            // $("#msjimprimir").html(datos);    
+            LoadImprimir(json);
+        }
+    });
+}
+
+
+
+function LoadImprimir(parametros){
+    $.ajax({
+        type: "POST",
+        url: "http://localhost/impresiones/index.php",
+        data: parametros,
+        datatype: 'json',
+        beforeSend: function () {
+           $("#msjimprimir").html('<div class="row justify-content-center" >Espere... </div>');
+        },
+        success: function(data) {            
+            $("#msjimprimir").html(data); // lo que regresa de la busquea         
+        }
+    });
+   
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

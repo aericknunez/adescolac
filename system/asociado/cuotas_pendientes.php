@@ -17,6 +17,7 @@ $asociado = new Asociados();
 </div>
 
 
+<div id="msjimprimir">Hola</div>
 <!-- /// modal ver cleinte -->
 
 <div class="modal" id="ModalPagar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="false">

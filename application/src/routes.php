@@ -670,6 +670,16 @@ include_once '../../system/cuotas/CuotasFijas.php';
 
 
 
+/// imprimir
+if($_REQUEST["op"]=="260"){ 
+include_once '../../system/facturas/FacturarWeb.php';
+	$factura = new FacturarWeb();
+	$factura->PagoCuota($_REQUEST["hash"]);
+}
+
+
+
+
 
 
 
