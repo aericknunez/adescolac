@@ -23,6 +23,8 @@ $parametros["total"] = $r["total"];
 $parametros["fecha"] = $r["fecha"];
 $parametros["fechav"] = $r["fechav"];
 $parametros["dia_cancel"] = $r["dia_cancel"];
+$parametros["vencido"] = $r["vencido"];
+$parametros["mora"] = $r["mora"];
 
 } unset($r);  
 
